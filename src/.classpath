@@ -6,9 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/usuario_local/Downloads/lib/lib/commons-cli-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/usuario_local/Downloads/lib/lib/json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ruben/Downloads/lib/commons-cli-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ruben/Downloads/lib/json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ruben/Downloads/lib/lib/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ruben/Downloads/lib/lib/json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
