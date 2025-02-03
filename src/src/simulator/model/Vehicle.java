@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class Vehicle extends SimulatedObject {
 
-	private List<Junction> _itinerary;
+	private List<Junction> _junctionList;
 	private int _maxSpeed;
 	private int _actualSpeed;
 	private VehicleStatus _status;
@@ -27,7 +27,7 @@ public class Vehicle extends SimulatedObject {
 		else {
 			_maxSpeed = maxSpeed;
 			_contaminationClass = contClass;
-			_itinerary = Collections.unmodifiableList(new ArrayList<>(itinerary));
+			_junctionList = Collections.unmodifiableList(new ArrayList<>(itinerary));
 		}
 	}
 
@@ -70,7 +70,7 @@ public class Vehicle extends SimulatedObject {
 	
 	//Todos los Getters
 	public List<Junction> get_itinerary() {
-		return _itinerary;
+		return _junctionList;
 	}
 
 	public int get_maxSpeed() {
