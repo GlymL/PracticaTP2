@@ -58,7 +58,7 @@ public class Junction extends SimulatedObject{
 		if( r.get_srcJunc() != this) //carretera no es de este cruce
 			 throw new IllegalArgumentException("Invalid type/desc");
 		for(int i = 0; i < this._listRoad.size(); i++) { //ya existe una carretera con mismo inicio y final
-			if(this._listRoad.get(i).get_srcJunc() == r.get_srcJunc() && this._listRoad.get(i).get_destJunc() == r.get_destJunc())
+			if(this._listRoad.get(i).get_destJunc() == r.get_destJunc())
 				throw new IllegalArgumentException("Invalid type/desc");
 		}
 		Junction j;
