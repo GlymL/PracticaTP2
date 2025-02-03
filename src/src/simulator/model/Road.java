@@ -25,8 +25,8 @@ public abstract class Road extends SimulatedObject{
 		  else {
 			  _srcJunc = srcJunc;
 			  _destJunc = destJunc;
-			  _maxSpeed = maxSpeed;
 			  _contLimit = contLimit;
+			  _maxSpeed = maxSpeed;
 			  _length = length;
 			  _weather = weather;
 			  _contTotal = 0;
