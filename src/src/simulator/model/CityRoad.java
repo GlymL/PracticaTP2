@@ -17,7 +17,7 @@ public class CityRoad extends Road {
 		if (w == Weather.WINDY || w == Weather.STORM)
 			x = 10;
 			
-		this.set_contTotal(Math.max(this.get_contTotal()-x, 0));
+		this.set_contTotal(Math.max(tc-x, 0));
 		
 	}
 
