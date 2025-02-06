@@ -85,13 +85,13 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 				this._status = VehicleStatus.ARRIVED;
 				this._road = null;
 				this._actualSpeed = 0;
-			}
+			}else {
 			 Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
 			 this._road = nextRoad;
 			 this._road.enter(this);
 			 this._location = 0; 
 			 this._status = VehicleStatus.TRAVELING; 
-
+			}
 		}
 	}
 	

@@ -20,15 +20,15 @@ public class Main {
 	System.out.println(j2.report());
 	System.out.println(r.report());
 	System.out.println(v.report());//status TRAVELING
-	//j1.advance(1);
-	//j2.advance(1);
+	j1.advance(1);
+	j2.advance(1);
 	r.advance(1);
 	System.out.println(j1.report());
 	System.out.println(j2.report());
 	System.out.println(r.report());
 	System.out.println(v.report());//status WAITING
-	//j1.advance(2);
-	//j2.advance(2);
+	j1.advance(2);
+	j2.advance(2);
 	r.advance(2);
 	System.out.println(j1.report());
 	System.out.println(j2.report());

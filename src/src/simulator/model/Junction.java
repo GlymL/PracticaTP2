@@ -38,16 +38,17 @@ public class Junction extends SimulatedObject{
 
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
-//		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehcile.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
-//		for(int i= 0; i < removable.size(); i++) {
-//			removable.get(i).moveToNextRoad();
-//		}
+		if(_currentGreenTraffic != -1) {
+		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehicle.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
+		for(int i= 0; i < removable.size(); i++) {
+			removable.get(i).moveToNextRoad();
+			}
+		}
 		int newGreenTraffic = _lsStrategy.chooseNextGreen(_roadList, _listArrayVehicle, _currentGreenTraffic, _lastGreenTraffic, time);
 		if(newGreenTraffic == _currentGreenTraffic)
 			_lastGreenTraffic++;
 		else
-			newGreenTraffic = _currentGreenTraffic;
+			_currentGreenTraffic = newGreenTraffic;
 	}
 
 	@Override
