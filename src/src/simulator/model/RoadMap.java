@@ -20,6 +20,7 @@ public class RoadMap{
 		_junctionList = new ArrayList<Junction>();
 		_roadList = new ArrayList<Road>();
 		_vehicleList = new ArrayList<Vehicle>();
+		
 	}
 	
 	void addJunction(Junction j) {

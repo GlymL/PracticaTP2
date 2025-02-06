@@ -1,8 +1,8 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.json.JSONObject;
 
 public abstract class Road extends SimulatedObject{
@@ -30,6 +30,9 @@ public abstract class Road extends SimulatedObject{
 			  _length = length;
 			  _weather = weather;
 			  _contTotal = 0;
+			  _vehicleList = new ArrayList<Vehicle>();
+			  _srcJunc.addOutGoingRoad(this);
+			  _destJunc.addIncommingRoad(this);
 		  }
 	
 	}
@@ -69,8 +72,8 @@ public abstract class Road extends SimulatedObject{
 	}
 
 	@Override
-	public JSONObject report() {
-		// TODO Auto-generated method stub
+	public JSONObject report() { //vehicles ids, array list --> for each añadiendo id vehicle
+		
 		return null;
 	}
 	

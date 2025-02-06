@@ -1,6 +1,7 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class Junction extends SimulatedObject{
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 		  super(id);
-		  if(lsStrategy == null || dqStrategy == null || xCoor <0 || yCoor < 0)
+		  if(lsStrategy == null || dqStrategy == null || xCoor < 0 || yCoor < 0)
 			  throw new IllegalArgumentException("Invalid type/desc");
 		  _lsStrategy = lsStrategy;
 		  _dqStrategy = dqStrategy;
@@ -30,6 +31,9 @@ public class Junction extends SimulatedObject{
 		  _yCoor = yCoor;
 		  _currentGreenTraffic = -1;
 		  _lastGreenTraffic = 0;
+		  _roadList = new ArrayList<Road>();
+		  _listArrayVehcile = new ArrayList<List<Vehicle>>();
+		  _mapJunctionRoad = new HashMap<Junction, Road>();
 		}
 
 	@Override
@@ -38,7 +42,6 @@ public class Junction extends SimulatedObject{
 		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehcile.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
 		for(int i= 0; i < removable.size(); i++) {
 			removable.get(i).moveToNextRoad();
-			
 		}
 	}
 

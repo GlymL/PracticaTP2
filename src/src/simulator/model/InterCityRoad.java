@@ -7,7 +7,7 @@ public class InterCityRoad extends Road {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	void reduceTotalContamination() {
 		// TODO Auto-generated method stub
@@ -32,7 +32,7 @@ public class InterCityRoad extends Road {
 	@Override
 	void updateSpeedLimit() {
 		// TODO Auto-generated method stub
-		if(this.get_contTotal() >= this.get_contLimit())
+		if(this.get_contTotal() > this.get_contLimit())
 			this.set_speedLimit(this.get_maxSpeed()/2);
 		else
 			this.set_speedLimit(this.get_maxSpeed());
@@ -40,9 +40,10 @@ public class InterCityRoad extends Road {
 
 	@Override
 	int calculateVehicleSpeed(Vehicle v) {
-		return((this.get_weather() == Weather.STORM) ? 
-				this.get_speedLimit()*8/10 :
-				this.get_speedLimit());
+		if(this.get_weather() == Weather.STORM) 
+				return this.get_speedLimit()*8/10;
+		else
+				return this.get_speedLimit();
 	}
 
 }

@@ -13,21 +13,21 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy{
 	}
 	@Override
 	public int chooseNextGreen(List<Road> roads, List<List<Vehicle>> qs, int currGreen, int lastSwitchingTime,
-			int currTime) { // funciona como un reloj (va de uno en uno hasta que cumplent _timeSlot tiempo)
+			int currTime) { 
 		int maxLength = -1;
 		int nextGreen = -1;
 		int iterator = (currGreen+1)%qs.size();
-		if(roads.size() == 0) //lista vacia
+		if(roads.isEmpty()) //lista vacia
 			return -1;
-		else if (currGreen == -1) { //todos apagados
-			for(int i = 0; i < qs.size(); i++) {
-				if (maxLength < qs.get(i).size()) {
-					maxLength = qs.get(i).size();
-					nextGreen = i;
-				}
-			} 
-			return nextGreen;
-		}
+//		else if (currGreen == -1) { //todos apagados
+//			for(int i = 0; i < qs.size(); i++) {
+//				if (maxLength < qs.get(i).size()) {
+//					maxLength = qs.get(i).size();
+//					nextGreen = i;
+//				}
+//			} 
+//			return nextGreen;
+//		}
 		else if(currTime-lastSwitchingTime < _timeSlot) //encendido lleva menos tiempo del min
 			return currGreen;
 		else {
