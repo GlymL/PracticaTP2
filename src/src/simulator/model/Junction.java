@@ -12,7 +12,7 @@ public class Junction extends SimulatedObject{
 	
 	private List<Road> _roadList;
 	private Map<Junction, Road> _mapJunctionRoad;
-	private List<List<Vehicle>> _listArrayVehcile;
+	private List<List<Vehicle>> _listArrayVehicle;
 	private int _currentGreenTraffic;
 	private int _lastGreenTraffic;
 	private LightSwitchingStrategy _lsStrategy;
@@ -32,30 +32,48 @@ public class Junction extends SimulatedObject{
 		  _currentGreenTraffic = -1;
 		  _lastGreenTraffic = 0;
 		  _roadList = new ArrayList<Road>();
-		  _listArrayVehcile = new ArrayList<List<Vehicle>>();
+		  _listArrayVehicle = new ArrayList<List<Vehicle>>();
 		  _mapJunctionRoad = new HashMap<Junction, Road>();
 		}
 
 	@Override
 	void advance(int time) {
 		// TODO Auto-generated method stub
-		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehcile.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
-		for(int i= 0; i < removable.size(); i++) {
-			removable.get(i).moveToNextRoad();
-		}
+//		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehcile.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
+//		for(int i= 0; i < removable.size(); i++) {
+//			removable.get(i).moveToNextRoad();
+//		}
+		int newGreenTraffic = _lsStrategy.chooseNextGreen(_roadList, _listArrayVehicle, _currentGreenTraffic, _lastGreenTraffic, time);
+		if(newGreenTraffic == _currentGreenTraffic)
+			_lastGreenTraffic++;
+		else
+			newGreenTraffic = _currentGreenTraffic;
 	}
 
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject j_junction = new JSONObject();
+		j_junction.put("id", _id);
+		j_junction.put("green", _currentGreenTraffic);
+		List<JSONObject> lv_report = new ArrayList<JSONObject>();
+		for(int i = 0; i < _roadList.size(); i++) {
+			JSONObject r_report = new JSONObject();
+			r_report.put("road", _roadList.get(i));
+			List<String> listReport = new ArrayList<String>();
+			for(Vehicle v : _listArrayVehicle.get(i))
+				listReport.add(v._id);
+			r_report.put("Vehicles", listReport);
+			lv_report.add(r_report);
+		}
+		j_junction.put("queues", lv_report);
+		return j_junction;
 	}
 	
 	void addIncommingRoad(Road r) {
 		_roadList.add(r);
 		List<Vehicle> lista = new ArrayList<Vehicle>();
 		lista = r.get_vehicleList();
-		_listArrayVehcile.add(lista);
+		_listArrayVehicle.add(lista);
 	}
 	void addOutGoingRoad(Road r) { // TODO not finished
 		if( r.get_srcJunc() != this) //carretera no es de este cruce
@@ -69,9 +87,13 @@ public class Junction extends SimulatedObject{
 		_mapJunctionRoad.put(j, r);
 	}
 	void enter(Vehicle v) {
+		if (v.get_status() != VehicleStatus.PENDING) {
 		Road r = v.get_road();
 		int aux = _roadList.indexOf(r); //veo la pos de la carretera
-		_listArrayVehcile.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
+		_listArrayVehicle.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
+		}
+		//else
+			
 	}
 	Road roadTo(Junction j) {
 		return _mapJunctionRoad.get(j);

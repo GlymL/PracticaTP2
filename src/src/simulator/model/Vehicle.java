@@ -41,8 +41,9 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 	void advance(int time) { //actualizador
 		// TODO Auto-generated method stub
 		if(_status == VehicleStatus.TRAVELING) {
+			_location = Math.min(_location + _actualSpeed, _road.get_length());
 			
-		}
+			}
 	}
 
 	@Override

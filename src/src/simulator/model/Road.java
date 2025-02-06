@@ -64,9 +64,9 @@ public abstract class Road extends SimulatedObject{
 		// TODO Auto-generated method stub
 		reduceTotalContamination();
 		updateSpeedLimit();
-		for(int i = 0; i < _vehicleList.size(); i++) {
-			_vehicleList.get(i).setSpeed(calculateVehicleSpeed(_vehicleList.get(i)));
-			_vehicleList.get(i).advance(time);
+		for(Vehicle v : _vehicleList) {
+			v.setSpeed(calculateVehicleSpeed(v));
+			v.advance(time);
 		}
 		// TODO _vehicleList.sort(null);
 	}
@@ -74,7 +74,16 @@ public abstract class Road extends SimulatedObject{
 	@Override
 	public JSONObject report() { //vehicles ids, array list --> for each añadiendo id vehicle
 		
-		return null;
+		JSONObject j_road = new JSONObject();
+		j_road.put("id", _id);
+		j_road.put("speedLimit", _speedLimit);
+		j_road.put("Weahter", _weather.toString());
+		j_road.put("co2", _contTotal);
+		List<String> reportList = new ArrayList<String>();
+		for(Vehicle v : _vehicleList)
+			reportList.add(v._id);
+		j_road.put("vehicles", reportList);
+		return j_road;
 	}
 	
 	
