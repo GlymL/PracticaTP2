@@ -92,9 +92,7 @@ public class Junction extends SimulatedObject{
 		Road r = v.get_road();
 		int aux = _roadList.indexOf(r); //veo la pos de la carretera
 		_listArrayVehicle.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
-		}
-		//else
-			
+		}	
 	}
 	Road roadTo(Junction j) {
 		return _mapJunctionRoad.get(j);
