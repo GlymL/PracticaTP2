@@ -49,7 +49,7 @@ public abstract class Road extends SimulatedObject{
 	}
 	
 	void addContamination(int c) {
-		if(c <= 0)
+		if(c < 0)
 			throw new IllegalArgumentException("Invalid type/desc");
 		else
 			_contTotal += c;

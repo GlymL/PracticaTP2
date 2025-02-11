@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
+public class Vehicle extends SimulatedObject{
 
 	private List<Junction> _junctionList;
 	private int _maxSpeed;
@@ -45,6 +45,7 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 			_location = Math.min(_location + _actualSpeed, _road.get_length());
 			int distance = _location - auxLocation;
 			_road.addContamination(distance*_contaminationClass);
+			_totalPollution += distance*_contaminationClass;
 //			if(_location ==_road.get_length())
 //				_road.get_destJunc().enter(this);
 			}
@@ -149,11 +150,4 @@ public class Vehicle extends SimulatedObject implements Comparable<Vehicle>{
 	public int get_totalPollution() {
 		return _totalPollution;
 	}
-
-	@Override
-	public int compareTo(Vehicle o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

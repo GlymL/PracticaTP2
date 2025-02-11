@@ -11,15 +11,18 @@ public class Main {
 		new MoveAllStrategy(),0,0);
 	Road r = new CityRoad("r",j1,j2,120,100,2,Weather.SUNNY);
 	Vehicle v = new Vehicle("v",100,3,Arrays.asList(j1,j2));
+	Vehicle v2 = new Vehicle("v2",120,1,Arrays.asList(j1,j2));
 	System.out.println(j1.report());
 	System.out.println(j2.report());
 	System.out.println(r.report()); 
 	System.out.println(v.report()); //status PENDING
+	System.out.println(v2.report());
 	v.moveToNextRoad();
 	System.out.println(j1.report());
 	System.out.println(j2.report());
 	System.out.println(r.report());
 	System.out.println(v.report());//status TRAVELING
+	System.out.println(v2.report());
 	j1.advance(1);
 	j2.advance(1);
 	r.advance(1);
@@ -27,6 +30,7 @@ public class Main {
 	System.out.println(j2.report());
 	System.out.println(r.report());
 	System.out.println(v.report());//status WAITING
+	System.out.println(v2.report());
 	j1.advance(2);
 	j2.advance(2);
 	r.advance(2);
@@ -34,6 +38,7 @@ public class Main {
 	System.out.println(j2.report());
 	System.out.println(r.report());
 	System.out.println(v.report());//status ARRIVED
+	System.out.println(v2.report());
 	}
 
 }

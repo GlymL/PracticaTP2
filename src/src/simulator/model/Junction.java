@@ -1,6 +1,8 @@
 package simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,19 @@ public class Junction extends SimulatedObject{
 			_lastGreenTraffic++;
 		else
 			_currentGreenTraffic = newGreenTraffic;
+		for(int i = 0; i < _listArrayVehicle.size(); i++) {
+			Collections.sort(_listArrayVehicle.get(i), new Comparator<Vehicle>() {
+				@Override
+				public int compare(Vehicle o1, Vehicle o2) {
+					if(o1.get_location() < o2.get_location())
+						return -1;
+					else if (o1.get_location() > o2.get_location())
+						return 1;
+					else // (if (o1.get_location() == o2.get_location()))
+						return 0;
+				}
+			});
+		}
 	}
 
 	@Override
@@ -73,7 +88,8 @@ public class Junction extends SimulatedObject{
 	void addIncommingRoad(Road r) {
 		_roadList.add(r);
 		List<Vehicle> lista = new ArrayList<Vehicle>();
-		lista = r.get_vehicleList();
+		for(int i = 0; i < r.get_vehicleList().size(); i++)
+			lista.add(r.get_vehicleList().get(i));
 		_listArrayVehicle.add(lista);
 	}
 	void addOutGoingRoad(Road r) { // TODO not finished
