@@ -116,13 +116,13 @@ class CityRoadTest {
 		v1.moveToNextRoad();
 		v2.moveToNextRoad();
 
-		String s = "{\"speedLimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[\"v1\",\"v2\"],\"id\":\"r1\"}";
+		String s = "{\"speedlimit\":100,\"co2\":0,\"weather\":\"SUNNY\",\"vehicles\":[\"v1\",\"v2\"],\"id\":\"r1\"}";
 		JSONObject json = r1.report();
 		assertTrue(new JSONObject(s).similar(json));
 
 		r1.advance(1);
 
-		s = "{\"speedLimit\":100,\"co2\":266,\"weather\":\"SUNNY\",\"vehicles\":[\"v2\",\"v1\"],\"id\":\"r1\"}";
+		s = "{\"speedlimit\":100,\"co2\":266,\"weather\":\"SUNNY\",\"vehicles\":[\"v2\",\"v1\"],\"id\":\"r1\"}";
 		assertTrue(new JSONObject(s).similar(r1.report()));
 	}
 
