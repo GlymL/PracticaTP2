@@ -11,7 +11,7 @@ public class TrafficSimulator {
 	private Queue<Event> _eventQueue;
 	private int _time;
 	
-	TrafficSimulator(){
+	public TrafficSimulator(){
 		_rm = new RoadMap();
 		_eventQueue = new PriorityQueue<Event>();
 		_time = 0;
