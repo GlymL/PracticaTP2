@@ -17,7 +17,7 @@ class NewJunctionEventTest {
 		Event e = new NewJunctionEvent(10,"j1", new RoundRobinStrategy(10), new MoveFirstStrategy(), 0, 0);
 		e.execute(map);
 		
-		List<Junction> lj = map.getJunctions();
+		List<Junction> lj = map.get_junctionList();
 		
 		assertEquals(1, lj.size());
 		

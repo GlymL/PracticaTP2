@@ -15,7 +15,6 @@ public class Vehicle extends SimulatedObject{
 	private int _contaminationClass;
 	private int _contTotal;
 	private int _totalDistance;
-	private int _lastIndexJunction;
 	
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) { //Constructor
@@ -30,7 +29,6 @@ public class Vehicle extends SimulatedObject{
 			_contTotal = 0;
 			_junctionList = Collections.unmodifiableList(new ArrayList<>(itinerary));
 			_status = VehicleStatus.PENDING;
-			_lastIndexJunction = 0;
 		}
 	}
 	@Override
@@ -40,6 +38,7 @@ public class Vehicle extends SimulatedObject{
 			int auxLocation = _location;
 			_location = Math.min(_location + _actualSpeed, _road.get_length());
 			int distance = _location - auxLocation;
+			_totalDistance += distance;
 			_road.addContamination(distance*_contaminationClass);
 			_contTotal += distance*_contaminationClass;
 			if(_location ==_road.get_length())

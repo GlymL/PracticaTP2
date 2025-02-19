@@ -32,8 +32,8 @@ class SetWeatherEventTest {
 		Event e = new SetWeatherEvent(10,Arrays.asList(new Pair<>("r1",Weather.CLOUDY),new Pair<>("r2",Weather.RAINY)));
 		e.execute(map);
 
-		assertEquals(Weather.CLOUDY, map.getRoad("r1").getWeather());
-		assertEquals(Weather.RAINY, map.getRoad("r2").getWeather());
+		assertEquals(Weather.CLOUDY, map.getRoad("r1").get_weather());
+		assertEquals(Weather.RAINY, map.getRoad("r2").get_weather());
 	}
 
 }

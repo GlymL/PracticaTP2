@@ -27,34 +27,27 @@ public class RoadMap{
 	}
 	
 	void addJunction(Junction j) {
-		int i = 0;
-		int max = _junctionList.size();
-		while(i < max) {
-			if(j == _junctionList.get(i))
-				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
-		}
+		if(_stringJunctionMap.containsKey(j.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
 		_junctionList.add(j);
 		_stringJunctionMap.put(j._id, j);
 	}
 	void addRoad(Road r) {
-		int i = 0;
-		int max = _roadList.size();
-		while(i < max) {
-			if(r == _roadList.get(i))
-				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
-		}
+		if(_stringRoadMap.containsKey(r.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
+		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) && !_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
+			throw new IllegalArgumentException("Invalid type/desc");	
 		_roadList.add(r);
 		_stringRoadMap.put(r._id, r);
 	}
 	void addVehicle(Vehicle v) {
-		int i = 0;
-		int max = _vehicleList.size();
-		while(i < max) {
-			if(v == _vehicleList.get(i))
+		if(_stringVehicleMap.containsKey(v.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
+		int j = 0;
+		while (j < v.get_itinerary().size()-1) {
+			if(!_stringRoadMap.containsKey(v.get_itinerary().get(j).roadTo(v.get_itinerary().get(j+1)).getId()))
 				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
+			j++;
 		}
 		_vehicleList.add(v);
 		_stringVehicleMap.put(v._id, v);

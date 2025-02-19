@@ -23,17 +23,17 @@ class NewCityRoadEventTest {
 		e.execute(map);
 		
 		// check that the vehicle was added to the map correctly
-		List<Road> l = map.getRoads();
+		List<Road> l = map.get_roadList();
 		
 		assertEquals(1, l.size());
 		
 		Road r = l.get(0);
 		
 		assertEquals("r1", r.getId());
-		assertEquals(100, r.getMaxSpeed());
-		assertEquals(500, r.getContLimit());
-		assertEquals(1000, r.getLength());
-		assertEquals(Weather.SUNNY, r.getWeather());
+		assertEquals(100, r.get_speedLimit());
+		assertEquals(500, r.get_contLimit());
+		assertEquals(1000, r.get_length());
+		assertEquals(Weather.SUNNY, r.get_weather());
 
 	}
 

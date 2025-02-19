@@ -63,7 +63,7 @@ public class Junction extends SimulatedObject{
 		List<JSONObject> lv_report = new ArrayList<JSONObject>();
 		for(int i = 0; i < _roadList.size(); i++) {
 			JSONObject r_report = new JSONObject();
-			r_report.put("road", _roadList.get(i));
+			r_report.put("road", _roadList.get(i).getId());
 			List<String> listReport = new ArrayList<String>();
 			for(Vehicle v : _listArrayVehicle.get(i))
 				listReport.add(v._id);

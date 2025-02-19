@@ -33,16 +33,16 @@ class NewVehicleEventTest {
 		e.execute(map);
 		
 		// check that the vehicle was added to the map correctly
-		List<Vehicle> l = map.getVehilces();
+		List<Vehicle> l = map.get_vehicleList();
 		
 		assertEquals(1, l.size());
 		
 		Vehicle v = l.get(0);
 		
 		assertEquals("v1", v.getId());
-		assertEquals(50, v.getMaxSpeed());
-		assertEquals(1, v.getContClass());
-		assertEquals(Arrays.asList(j1,j2), v.getItinerary());
+		assertEquals(50, v.get_maxSpeed());
+		assertEquals(1, v.get_contaminationClass());
+		assertEquals(Arrays.asList(j1,j2), v.get_itinerary());
 	}
 
 }
