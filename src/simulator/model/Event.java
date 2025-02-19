@@ -26,13 +26,13 @@ public abstract class Event implements Comparable<Event> {
 // _time is equal it compares the _time_stamp;
 	  
 	  if(_time > o._time)
-		  return -1;
+		  return 1;
 	  else if (_time < o._time)
-		  return 1;
-	  else if(_time_stamp > o._time_stamp)
 		  return -1;
-	  else if (_time_stamp < o._time_stamp)
+	  else if(_time_stamp > o._time_stamp)
 		  return 1;
+	  else if (_time_stamp < o._time_stamp)
+		  return -1;
 	  else
 		  return 0;
   }

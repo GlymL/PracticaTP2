@@ -27,5 +27,6 @@ public class NewVehicleEvent extends Event{
 			jList.add(map.getJunction(s));
 		v = new Vehicle(_id, _maxSpeed, _contClass, jList);
 		map.addVehicle(v);
+		v.advance(_time);
 	}
 }

@@ -39,8 +39,10 @@ public class Junction extends SimulatedObject{
 	void advance(int time) {
 		if(_currentGreenTraffic != -1) {
 		List<Vehicle> removable = _dqStrategy.dequeue(_listArrayVehicle.get(_currentGreenTraffic)); //llama a la funcion con la cola del semaforo actual
-		for(int i= 0; i < removable.size(); i++) {
-			removable.get(i).moveToNextRoad();
+		for(Vehicle v : _listArrayVehicle.get(_currentGreenTraffic))
+			if (removable.contains(v)) {
+				v.moveToNextRoad();
+				_listArrayVehicle.get(_currentGreenTraffic).remove(v);
 			}
 		}
 		int newGreenTraffic = _lsStrategy.chooseNextGreen(_roadList, _listArrayVehicle, _currentGreenTraffic, _lastGreenTraffic, time);
@@ -48,16 +50,13 @@ public class Junction extends SimulatedObject{
 			_lastGreenTraffic++;
 		else
 			_currentGreenTraffic = newGreenTraffic;
-//		for(int i = 0; i < _listArrayVehicle.size(); i++) {
-//			Collections.sort(_listArrayVehicle.get(i), new VehicleComparator());
-//		}
 	}
 	@Override
 	public JSONObject report() {
 		JSONObject j_junction = new JSONObject();
 		j_junction.put("id", _id);
 		if(_currentGreenTraffic != -1)
-			j_junction.put("green", _currentGreenTraffic);
+			j_junction.put("green", _roadList.get(_currentGreenTraffic).getId());
 		else
 			j_junction.put("green", "none");
 		List<JSONObject> lv_report = new ArrayList<JSONObject>();
@@ -75,6 +74,8 @@ public class Junction extends SimulatedObject{
 	}
 	
 	void addIncommingRoad(Road r) {
+		if( r.get_destJunc() != this) //carretera no es de este cruce
+			 throw new IllegalArgumentException("Invalid type/desc");
 		_roadList.add(r);
 		List<Vehicle> lista = new LinkedList<Vehicle>();
 		_listArrayVehicle.add(lista);
@@ -86,15 +87,13 @@ public class Junction extends SimulatedObject{
 			if(this._roadList.get(i).get_destJunc() == r.get_destJunc())
 				throw new IllegalArgumentException("Invalid type/desc");
 		}
-		Junction j;
-		j = r.get_destJunc();
-		_mapJunctionRoad.put(j, r);
+		_mapJunctionRoad.put(r.get_destJunc(), r);
 	}
 	void enter(Vehicle v) {
 		if (v.get_status() != VehicleStatus.PENDING) {
-		Road r = v.get_road();
-		int aux = _roadList.indexOf(r); //veo la pos de la carretera
-		_listArrayVehicle.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
+			Road r = v.get_road();
+			int aux = _roadList.indexOf(r); //veo la pos de la carretera
+			_listArrayVehicle.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
 		}	
 	}
 	Road roadTo(Junction j) {
