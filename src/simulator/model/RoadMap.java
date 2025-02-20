@@ -35,7 +35,8 @@ public class RoadMap{
 	void addRoad(Road r) {
 		if(_stringRoadMap.containsKey(r.getId()))
 			throw new IllegalArgumentException("Invalid type/desc");
-		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) && !_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
+		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) &&
+				!_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
 			throw new IllegalArgumentException("Invalid type/desc");
 		_roadList.add(r);
 		_stringRoadMap.put(r._id, r);

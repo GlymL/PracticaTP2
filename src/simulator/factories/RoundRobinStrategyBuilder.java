@@ -6,8 +6,8 @@ import simulator.model.LightSwitchingStrategy;
 import simulator.model.RoundRobinStrategy;
 
 public class RoundRobinStrategyBuilder extends Builder<LightSwitchingStrategy> {
-	private static final String _type_tag = "type";
-	private static final String _desc = "data";
+	private static final String _type_tag = "round_robin_lss";
+	private static final String _desc = "round robin light switching stragey";
 	
 	public RoundRobinStrategyBuilder() {
 		super(_type_tag, _desc);

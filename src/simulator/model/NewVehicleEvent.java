@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewVehicleEvent extends Event{
-	Vehicle v;
 	String _id;
 	int _maxSpeed;
 	int _contClass;
@@ -25,8 +24,7 @@ public class NewVehicleEvent extends Event{
 		List<Junction> jList = new ArrayList<Junction>();
 		for(String s : _itinerary)
 			jList.add(map.getJunction(s));
-		v = new Vehicle(_id, _maxSpeed, _contClass, jList);
+		Vehicle v = new Vehicle(_id, _maxSpeed, _contClass, jList);
 		map.addVehicle(v);
-		v.advance(_time);
 	}
 }

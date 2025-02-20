@@ -5,8 +5,8 @@ import simulator.model.LightSwitchingStrategy;
 import simulator.model.MostCrowdedStrategy;
 
 public class MostCrowdedStrategyBuilder extends Builder<LightSwitchingStrategy> {
-	private static final String _type_tag = "type";
-	private static final String _desc = "data";
+	private static final String _type_tag = "most_crowded_lss";
+	private static final String _desc = "most crowded light switching strategy";
 	public MostCrowdedStrategyBuilder() {
 		super(_type_tag, _desc);
 	}

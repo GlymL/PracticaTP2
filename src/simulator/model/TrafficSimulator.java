@@ -35,6 +35,8 @@ public class TrafficSimulator {
 	}
 	public void reset() {
 		_rm.reset();
+		_eventQueue.clear();
+		_time = 0;
 	}
 	
 	public JSONObject report() {
