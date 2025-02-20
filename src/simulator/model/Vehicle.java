@@ -33,7 +33,6 @@ public class Vehicle extends SimulatedObject{
 	}
 	@Override
 	void advance(int time) { //actualizador
-		// TODO Auto-generated method stub
 		if(_status == VehicleStatus.TRAVELING) {
 			int auxLocation = _location;
 			_location = Math.min(_location + _actualSpeed, _road.get_length());
@@ -49,7 +48,6 @@ public class Vehicle extends SimulatedObject{
 	}
 	@Override
 	public JSONObject report() {
-		// TODO Auto-generated method stub
 		JSONObject j_vehicle = new JSONObject();
 		j_vehicle.put("id", _id);
 		j_vehicle.put("speed", _actualSpeed);

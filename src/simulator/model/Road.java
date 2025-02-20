@@ -62,7 +62,6 @@ public abstract class Road extends SimulatedObject{
 	
 	@Override
 	void advance(int time) {
-		// TODO Auto-generated method stub
 		reduceTotalContamination();
 		updateSpeedLimit();
 		for(Vehicle v : _vehicleList) {

@@ -13,7 +13,6 @@ public class NewInterCityRoadEventBuilder extends Builder<Event>{
 	
 	public NewInterCityRoadEventBuilder() {
 		super(_type_tag, _desc);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

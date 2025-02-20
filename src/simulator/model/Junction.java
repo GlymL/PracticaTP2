@@ -80,7 +80,7 @@ public class Junction extends SimulatedObject{
 		List<Vehicle> lista = new LinkedList<Vehicle>();
 		_listArrayVehicle.add(lista);
 	}
-	void addOutGoingRoad(Road r) { // TODO not finished
+	void addOutGoingRoad(Road r) {
 		if( r.get_srcJunc() != this) //carretera no es de este cruce
 			 throw new IllegalArgumentException("Invalid type/desc");
 		for(int i = 0; i < this._roadList.size(); i++) { //ya existe una carretera con mismo inicio y final

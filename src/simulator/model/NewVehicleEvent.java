@@ -20,7 +20,6 @@ public class NewVehicleEvent extends Event{
 
 	@Override
 	void execute(RoadMap map) {
-		// TODO Auto-generated method stub
 		List<Junction> jList = new ArrayList<Junction>();
 		for(String s : _itinerary)
 			jList.add(map.getJunction(s));

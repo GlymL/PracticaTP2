@@ -10,7 +10,6 @@ public class NewJunctionEvent extends Event{
 
 	@Override
 	void execute(RoadMap map) {
-		// TODO Auto-generated method stub
 		map.addJunction(j);
 	}
 	

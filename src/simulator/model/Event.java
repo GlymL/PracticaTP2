@@ -22,9 +22,7 @@ public abstract class Event implements Comparable<Event> {
 
   @Override
   public int compareTo(Event o) {
-    // TODO complete the method to compare events according to their _time, and when
-// _time is equal it compares the _time_stamp;
-	  
+	  // _time is equal it compares the _time_stamp;
 	  if(_time > o._time)
 		  return 1;
 	  else if (_time < o._time)
