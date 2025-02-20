@@ -3,6 +3,7 @@ package simulator.control;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class Controller {
 		}
 	}
 	public void run(int n, OutputStream out) throws IOException {
+		PrintStream p = new PrintStream(out);
 	    JSONObject report = new JSONObject();
 	    List<JSONObject> out_report = new ArrayList<>();
 	    for (int i = 0; i < n; i++) {
@@ -39,10 +41,7 @@ public class Controller {
 	        out_report.add(_ts.report());
 	    }
 	    report.put("states", out_report);
-
-	    // Convert the JSON object to a string and write it to the output stream
-	    out.write(report.toString().getBytes());
-	    out.flush();
+	    p.println(report.toString());
 	}
 	
 	public void reset() {
