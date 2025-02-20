@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONObject;
 
 public class RoadMap{
@@ -28,35 +27,28 @@ public class RoadMap{
 	}
 	
 	void addJunction(Junction j) {
-		int i = 0;
-		int max = _junctionList.size();
-		while(i < max) {
-			if(j == _junctionList.get(i))
-				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
-		}
+		if(_stringJunctionMap.containsKey(j.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
 		_junctionList.add(j);
 		_stringJunctionMap.put(j._id, j);
-		//_stringJunctionMap.put(, j); preguntar al profesor
 	}
 	void addRoad(Road r) {
-		int i = 0;
-		int max = _roadList.size();
-		while(i < max) {
-			if(r == _roadList.get(i))
-				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
-		}
+		if(_stringRoadMap.containsKey(r.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
+		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) &&
+				!_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
 		_roadList.add(r);
 		_stringRoadMap.put(r._id, r);
 	}
 	void addVehicle(Vehicle v) {
-		int i = 0;
-		int max = _vehicleList.size();
-		while(i < max) {
-			if(v == _vehicleList.get(i))
+		if(_stringVehicleMap.containsKey(v.getId()))
+			throw new IllegalArgumentException("Invalid type/desc");
+		int j = 0;
+		while (j < v.get_itinerary().size()-1) {
+			if(!_stringRoadMap.containsKey(v.get_itinerary().get(j).roadTo(v.get_itinerary().get(j+1)).getId()))
 				throw new IllegalArgumentException("Invalid type/desc");
-		i++;
+			j++;
 		}
 		_vehicleList.add(v);
 		_stringVehicleMap.put(v._id, v);
@@ -66,23 +58,18 @@ public class RoadMap{
 	public Junction getJunction(String id) {
 		return _stringJunctionMap.get(id);
 	}
-
 	public Road getRoad(String id) {
 		return _stringRoadMap.get(id);
 	}
-
 	public Vehicle getVehicle(String id) {
 		return _stringVehicleMap.get(id);
 	}
-
 	public List<Junction> get_junctionList() {
 		return Collections.unmodifiableList(_junctionList);
 	}
-
 	public List<Road> get_roadList() {
 		return Collections.unmodifiableList(_roadList);
 	}
-
 	public List<Vehicle> get_vehicleList() {
 		return Collections.unmodifiableList(_vehicleList);
 	}
@@ -95,7 +82,6 @@ public class RoadMap{
 		_stringRoadMap.clear();
 		_stringVehicleMap.clear();
 	}
-
 	public JSONObject report() {
 		JSONObject j_roadMap= new JSONObject();
 		List<JSONObject> report_junction = new ArrayList<JSONObject>();
@@ -112,6 +98,5 @@ public class RoadMap{
 		j_roadMap.put("vehicles", report_vehicles);
 		return j_roadMap;
 	}
-
 	
 }

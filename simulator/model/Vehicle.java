@@ -1,14 +1,11 @@
 package simulator.model;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.json.JSONObject;
 
 public class Vehicle extends SimulatedObject{
-
 	private List<Junction> _junctionList;
 	private int _maxSpeed;
 	private int _actualSpeed;
@@ -18,7 +15,6 @@ public class Vehicle extends SimulatedObject{
 	private int _contaminationClass;
 	private int _contTotal;
 	private int _totalDistance;
-	private int _lastIndexJunction;
 	
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) { //Constructor
@@ -33,10 +29,8 @@ public class Vehicle extends SimulatedObject{
 			_contTotal = 0;
 			_junctionList = Collections.unmodifiableList(new ArrayList<>(itinerary));
 			_status = VehicleStatus.PENDING;
-			_lastIndexJunction = 0;
 		}
 	}
-
 	@Override
 	void advance(int time) { //actualizador
 		// TODO Auto-generated method stub
@@ -44,13 +38,15 @@ public class Vehicle extends SimulatedObject{
 			int auxLocation = _location;
 			_location = Math.min(_location + _actualSpeed, _road.get_length());
 			int distance = _location - auxLocation;
+			_totalDistance += distance;
 			_road.addContamination(distance*_contaminationClass);
 			_contTotal += distance*_contaminationClass;
-			if(_location ==_road.get_length())
+			if(_location ==_road.get_length()) {
 				this.moveToNextRoad();
+				_status = VehicleStatus.WAITING;
 			}
+		}
 	}
-
 	@Override
 	public JSONObject report() {
 		// TODO Auto-generated method stub
@@ -70,34 +66,30 @@ public class Vehicle extends SimulatedObject{
 	
 	
 	void moveToNextRoad() {
-		if(this._status != VehicleStatus.ARRIVED) {
-			if(this._road != null) { //esta en una carretera
-				this._road.exit(this); //sale de ella
-			}
-			Junction currentJunction;
-			if(this._status == VehicleStatus.PENDING) { //aun no ha empezado su recorrido
-				currentJunction = _junctionList.get(0);
-			}
-			else {
-				//si esta viajando tiene que ir a su cruce destino
-				currentJunction = this._road.get_destJunc();
-			}
-			int nextIndex = this._junctionList.indexOf(currentJunction) + 1;
-
-			// si no hay mas carreteras en el itinerario el vehiculo ha llegado a su destino
-
-			if(nextIndex >= this._junctionList.size()) { 
-				this._status = VehicleStatus.ARRIVED;
-				this._road = null;
-			}else {
-			 Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
-			 this._road = nextRoad;
-			 this._road.enter(this);
-			}
-			this._actualSpeed = 0;
-			this._location = 0;
-			this._status = VehicleStatus.TRAVELING;
+		if(!(_status == VehicleStatus.PENDING || _status == VehicleStatus.WAITING))
+			throw new IllegalArgumentException("Invalid type/desc");
+		Junction currentJunction;
+		if(this._status == VehicleStatus.PENDING) { //aun no ha empezado su recorrido
+			currentJunction = _junctionList.get(0);
 		}
+		else {
+			//si esta viajando tiene que ir a su cruce destino
+			currentJunction = this._road.get_destJunc();
+			_road.exit(this);
+		}
+		int nextIndex = this._junctionList.indexOf(currentJunction) + 1;
+		// si no hay mas carreteras en el itinerario el vehiculo ha llegado a su destino
+		if(nextIndex >= this._junctionList.size()) { 
+			this._status = VehicleStatus.ARRIVED;
+			this._road = null;
+		}else {
+		 Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
+		 this._road = nextRoad;
+		 this._road.enter(this);
+		}
+		this._actualSpeed = 0;
+		this._location = 0;
+		this._status = VehicleStatus.TRAVELING;
 	}
 	
 	
@@ -122,31 +114,24 @@ public class Vehicle extends SimulatedObject{
 	public List<Junction> get_itinerary() {
 		return _junctionList;
 	}
-
 	public int get_maxSpeed() {
 		return _maxSpeed;
 	}
-
 	public int get_actualSpeed() {
 		return _actualSpeed;
 	}
-
 	public VehicleStatus get_status() {
 		return _status;
 	}
-
 	public Road get_road() {
 		return _road;
 	}
-
 	public int get_location() {
 		return _location;
 	}
-
 	public int get_contaminationClass() {
 		return _contaminationClass;
 	}
-
 	public int get_contTotal() {
 		return _contTotal;
 	}

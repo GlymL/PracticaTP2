@@ -10,9 +10,10 @@ public class VehicleComparator implements Comparator<Vehicle>{;
 	public int compare(Vehicle o1, Vehicle o2) {
 		if(o1.get_location() < o2.get_location())
 			return 1;
-		else // if (o1.get_location() >= o2.get_location())
+		else if (o1.get_location() > o2.get_location())
 			return -1;
-
+		else // (if (o1.get_location() == o2.get_location()))
+			return 0;
 	}
 
 }

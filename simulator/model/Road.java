@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import org.json.JSONObject;
 
-public abstract class Road extends SimulatedObject{
 
+public abstract class Road extends SimulatedObject{
 	private  Junction _srcJunc;
 	private Junction _destJunc;
 	private int _maxSpeed;
@@ -71,13 +71,12 @@ public abstract class Road extends SimulatedObject{
 		}
 		Collections.sort(_vehicleList, new VehicleComparator());
 	}
-
 	@Override
 	public JSONObject report() { //vehicles ids, array list --> for each añadiendo id vehicle
 		
 		JSONObject j_road = new JSONObject();
 		j_road.put("id", _id);
-		j_road.put("speedLimit", _maxSpeed);
+		j_road.put("speedlimit", _maxSpeed);
 		j_road.put("weather", _weather.toString());
 		j_road.put("co2", _contTotal);
 		List<String> reportList = new ArrayList<String>();
@@ -95,41 +94,32 @@ public abstract class Road extends SimulatedObject{
 		else
 			_weather = w;
 	}
-
 	
 	//Getter
 	public Junction get_srcJunc() {
 		return _srcJunc;
 	}
-
 	public Junction get_destJunc() {
 		return _destJunc;
 	}
-
 	public int get_maxSpeed() {
 		return _maxSpeed;
 	}
-
 	public int get_speedLimit() {
 		return _speedLimit;
 	}
-
 	public int get_contLimit() {
 		return _contLimit;
 	}
-
 	public int get_contTotal() {
 		return _contTotal;
 	}
-
 	public int get_length() {
 		return _length;
 	}
-
 	public Weather get_weather() {
 		return _weather;
 	}
-
 	public List<Vehicle> get_vehicleList() {
 		return Collections.unmodifiableList(_vehicleList);
 	}
