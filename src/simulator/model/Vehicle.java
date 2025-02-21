@@ -27,7 +27,7 @@ public class Vehicle extends SimulatedObject{
 			_actualSpeed = 0;
 			_totalDistance = 0;
 			_contTotal = 0;
-			_junctionList = Collections.unmodifiableList(new ArrayList<>(itinerary));
+			_junctionList = itinerary;
 			_status = VehicleStatus.PENDING;
 		}
 	}
@@ -41,8 +41,9 @@ public class Vehicle extends SimulatedObject{
 			_road.addContamination(distance*_contaminationClass);
 			_contTotal += distance*_contaminationClass;
 			if(_location ==_road.get_length()) {
-				this.moveToNextRoad();
+				_actualSpeed = 0;
 				_status = VehicleStatus.WAITING;
+				_road.get_destJunc().enter(this);
 			}
 		}
 	}
@@ -51,11 +52,11 @@ public class Vehicle extends SimulatedObject{
 		JSONObject j_vehicle = new JSONObject();
 		j_vehicle.put("id", _id);
 		j_vehicle.put("speed", _actualSpeed);
-		j_vehicle.put("distance", _location);
+		j_vehicle.put("distance", _totalDistance);
 		j_vehicle.put("co2", this._contTotal);
 		j_vehicle.put("class", this._contaminationClass);
 		j_vehicle.put("status", _status.toString());
-		if(_status != VehicleStatus.PENDING && _status != VehicleStatus.ARRIVED) {
+		if (!(_status == VehicleStatus.PENDING || _status == VehicleStatus.ARRIVED)) {
 			j_vehicle.put("road", _road.getId());
 			j_vehicle.put("location", _location);
 		}
@@ -80,14 +81,16 @@ public class Vehicle extends SimulatedObject{
 		if(nextIndex >= this._junctionList.size()) { 
 			this._status = VehicleStatus.ARRIVED;
 			this._road = null;
+			this._actualSpeed = 0;
+			this._location = 0;
 		}else {
-		 Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
-		 this._road = nextRoad;
-		 this._road.enter(this);
+			Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
+			this._road = nextRoad;
+			this._actualSpeed = 0;
+			this._location = 0;
+			this._road.enter(this);
+			this._status = VehicleStatus.TRAVELING;
 		}
-		this._actualSpeed = 0;
-		this._location = 0;
-		this._status = VehicleStatus.TRAVELING;
 	}
 	
 	
@@ -110,7 +113,7 @@ public class Vehicle extends SimulatedObject{
 	
 	//Todos los Getters
 	public List<Junction> get_itinerary() {
-		return _junctionList;
+		return Collections.unmodifiableList(new ArrayList<>(_junctionList));
 	}
 	public int get_maxSpeed() {
 		return _maxSpeed;

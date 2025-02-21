@@ -104,6 +104,7 @@ public class Main {
 		lsbs.add( new RoundRobinStrategyBuilder() );
 		lsbs.add( new MostCrowdedStrategyBuilder() );
 		Factory<LightSwitchingStrategy> lssFactory = new BuilderBasedFactory<>(lsbs);
+		
 		//	initialize the events factory
 		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
 		dqbs.add( new MoveFirstStrategyBuilder() );
@@ -115,7 +116,10 @@ public class Main {
 		ebs.add( new NewJunctionEventBuilder(lssFactory,dqsFactory) );
 		ebs.add( new NewCityRoadEventBuilder() );
 		ebs.add( new NewInterCityRoadEventBuilder() );
-		// ...
+		ebs.add(new NewVehicleEventBuilder());
+		ebs.add(new SetWeatherEventBuilder());
+		ebs.add(new SetContClassEventBuilder());
+		
 		_eventsFactory = new BuilderBasedFactory<>(ebs);
 	}
 
@@ -132,6 +136,8 @@ public class Main {
 		TrafficSimulator ts = new TrafficSimulator();
 		
 		Controller c = new Controller(ts, _eventsFactory);
+		
+		c.loadEvents(is);
 		
 		is.close();
 		

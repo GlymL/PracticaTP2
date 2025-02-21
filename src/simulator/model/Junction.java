@@ -46,9 +46,8 @@ public class Junction extends SimulatedObject{
 			}
 		}
 		int newGreenTraffic = _lsStrategy.chooseNextGreen(_roadList, _listArrayVehicle, _currentGreenTraffic, _lastGreenTraffic, time);
-		if(newGreenTraffic == _currentGreenTraffic)
-			_lastGreenTraffic++;
-		else
+		if(newGreenTraffic != _currentGreenTraffic)
+			_lastGreenTraffic = time;
 			_currentGreenTraffic = newGreenTraffic;
 	}
 	@Override

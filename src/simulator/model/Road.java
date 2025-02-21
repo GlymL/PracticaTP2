@@ -64,7 +64,8 @@ public abstract class Road extends SimulatedObject{
 	void advance(int time) {
 		reduceTotalContamination();
 		updateSpeedLimit();
-		for(Vehicle v : _vehicleList) {
+		for(int i = 0; i < _vehicleList.size(); i++) {
+			Vehicle v = _vehicleList.get(i);
 			v.setSpeed(calculateVehicleSpeed(v));
 			v.advance(time);
 		}
@@ -75,7 +76,7 @@ public abstract class Road extends SimulatedObject{
 		
 		JSONObject j_road = new JSONObject();
 		j_road.put("id", _id);
-		j_road.put("speedlimit", _maxSpeed);
+		j_road.put("speedlimit", _speedLimit);
 		j_road.put("weather", _weather.toString());
 		j_road.put("co2", _contTotal);
 		List<String> reportList = new ArrayList<String>();

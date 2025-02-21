@@ -19,16 +19,7 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy{
 		int iterator = (currGreen+1)%qs.size();
 		if(roads.isEmpty()) //lista vacia
 			return -1;
-//		else if (currGreen == -1) { //todos apagados
-//			for(int i = 0; i < qs.size(); i++) {
-//				if (maxLength < qs.get(i).size()) {
-//					maxLength = qs.get(i).size();
-//					nextGreen = i;
-//				}
-//			} 
-//			return nextGreen;
-//		}
-		else if(currTime-lastSwitchingTime < _timeSlot) //encendido lleva menos tiempo del min
+		else if(currTime-lastSwitchingTime < _timeSlot) //encendido lleva menos tiempo del min	
 			return currGreen;
 		else {
 			for(int i = 0; i < qs.size(); i++) { //para hacer qs.size() iteraciones, usando iterador aparte por claridad
