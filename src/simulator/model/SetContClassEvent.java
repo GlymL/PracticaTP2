@@ -11,7 +11,7 @@ public class SetContClassEvent extends Event{
 	public SetContClassEvent(int time, List<Pair<String,Integer>> cs)  {
 		super(time);
 		if(cs == null)
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The argument Contamination Class List cannot be null");
 		_cs = cs;
 	}
 

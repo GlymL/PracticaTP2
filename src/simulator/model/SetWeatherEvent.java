@@ -9,7 +9,7 @@ public class SetWeatherEvent extends Event{
 	public SetWeatherEvent(int time, List<Pair<String,Weather>> ws) {
 		super(time);
 		if(ws == null)
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The argument Wetaher List cannot be null");
 		_ws = ws;
 		}
 

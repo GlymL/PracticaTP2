@@ -20,28 +20,36 @@ public abstract class Road extends SimulatedObject{
 	
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
 		  super(id);
-		  if (maxSpeed <= 0 || contLimit < 0 || length <= 0 || srcJunc == null || destJunc == null || weather == null)
-				throw new IllegalArgumentException("Invalid type/desc");
-		  else {
-			  _srcJunc = srcJunc;
-			  _destJunc = destJunc;
-			  _contLimit = contLimit;
-			  _maxSpeed = maxSpeed;
-			  _length = length;
-			  _weather = weather;
-			  _contTotal = 0;
-			  _vehicleList = new ArrayList<Vehicle>();
-			  _srcJunc.addOutGoingRoad(this);
-			  _destJunc.addIncommingRoad(this);
-			  _speedLimit = maxSpeed;
-		  }
-	
+		  if (maxSpeed <= 0)
+				throw new IllegalArgumentException("The argument maxSpeed must be a positive number");
+		  if (contLimit < 0)
+				throw new IllegalArgumentException("The argument Contamination limit must be a non negative number");
+		  if (length <= 0)
+				throw new IllegalArgumentException("The argument length must be a positive number");
+		  if (srcJunc == null)
+				throw new IllegalArgumentException("The argument Source Junction cannot be null");
+		  if (destJunc == null)
+				throw new IllegalArgumentException("The argument Destination Junction cannot be null");
+		  if (weather == null)
+				throw new IllegalArgumentException("The argument weather cannot be null");
+		  _srcJunc = srcJunc;
+		  _destJunc = destJunc;
+		  _contLimit = contLimit;
+		  _maxSpeed = maxSpeed;
+		  _length = length;
+		  _weather = weather;
+		  _contTotal = 0;
+		  _vehicleList = new ArrayList<Vehicle>();
+		  _srcJunc.addOutGoingRoad(this);
+		  _destJunc.addIncommingRoad(this);
+		  _speedLimit = maxSpeed;
 	}
 	
 	void enter(Vehicle v) {
-		if(v.get_actualSpeed() != 0 || v.get_location() != 0)
-			throw new IllegalArgumentException("Invalid type/desc");
-		else
+		if(v.get_actualSpeed() != 0)
+			throw new IllegalArgumentException("The argument speed must be a positive number");
+		if(v.get_location() != 0)
+			throw new IllegalArgumentException("The argument location must be a positive number");
 			_vehicleList.add(v);
 	}
 	
@@ -51,7 +59,7 @@ public abstract class Road extends SimulatedObject{
 	
 	void addContamination(int c) {
 		if(c < 0)
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The argument contamination increment must be a positive number");
 		else
 			_contTotal += c;
 	}
@@ -90,7 +98,7 @@ public abstract class Road extends SimulatedObject{
 	//Setter
 	void setWeather(Weather w) {
 		if(w == null)
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The argument weather cannot be null");
 		else
 			_weather = w;
 	}

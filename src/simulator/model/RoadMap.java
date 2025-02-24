@@ -28,26 +28,26 @@ public class RoadMap{
 	
 	void addJunction(Junction j) {
 		if(_stringJunctionMap.containsKey(j.getId()))
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The junction is already on the roadmap");
 		_junctionList.add(j);
 		_stringJunctionMap.put(j._id, j);
 	}
 	void addRoad(Road r) {
 		if(_stringRoadMap.containsKey(r.getId()))
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The road is already on the roadmap");
 		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) &&
 				!_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The junctions connected to the road are not inside the roadmap");
 		_roadList.add(r);
 		_stringRoadMap.put(r._id, r);
 	}
 	void addVehicle(Vehicle v) {
 		if(_stringVehicleMap.containsKey(v.getId()))
-			throw new IllegalArgumentException("Invalid type/desc");
+			throw new IllegalArgumentException("The vehicle is already on the roadmap");
 		int j = 0;
 		while (j < v.get_itinerary().size()-1) {
 			if(!_stringRoadMap.containsKey(v.get_itinerary().get(j).roadTo(v.get_itinerary().get(j+1)).getId()))
-				throw new IllegalArgumentException("Invalid type/desc");
+				throw new IllegalArgumentException("The road where the vehicle lays is not on the roadmap");
 			j++;
 		}
 		_vehicleList.add(v);

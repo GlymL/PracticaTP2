@@ -23,8 +23,13 @@ public class Junction extends SimulatedObject{
 	
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
 		  super(id);
-		  if(lsStrategy == null || dqStrategy == null || xCoor < 0 || yCoor < 0)
-			  throw new IllegalArgumentException("Invalid type/desc");
+		  if(lsStrategy == null)
+			  throw new IllegalArgumentException("The argument Lisght Swithing Strategy cannot be null");
+		  if(dqStrategy == null)
+			  throw new IllegalArgumentException("The argument Dequeuing Strategy cannot be null");
+		  if(xCoor < 0 || yCoor < 0)
+			  throw new IllegalArgumentException("The argument xCoord and yCoord must be a positive number");
+			  
 		  _lsStrategy = lsStrategy;
 		  _dqStrategy = dqStrategy;
 		  _xCoor = xCoor;
@@ -74,18 +79,16 @@ public class Junction extends SimulatedObject{
 	
 	void addIncommingRoad(Road r) {
 		if( r.get_destJunc() != this) //carretera no es de este cruce
-			 throw new IllegalArgumentException("Invalid type/desc");
+			 throw new IllegalArgumentException("The incoming road does not form part of the junction");
 		_roadList.add(r);
 		List<Vehicle> lista = new LinkedList<Vehicle>();
 		_listArrayVehicle.add(lista);
 	}
 	void addOutGoingRoad(Road r) {
 		if( r.get_srcJunc() != this) //carretera no es de este cruce
-			 throw new IllegalArgumentException("Invalid type/desc");
-		for(int i = 0; i < this._roadList.size(); i++) { //ya existe una carretera con mismo inicio y final
-			if(this._roadList.get(i).get_destJunc() == r.get_destJunc())
-				throw new IllegalArgumentException("Invalid type/desc");
-		}
+			 throw new IllegalArgumentException("The outgoing road does not form part of the junction");
+		if(_mapJunctionRoad.containsValue(r))
+				throw new IllegalArgumentException("The road is already added");
 		_mapJunctionRoad.put(r.get_destJunc(), r);
 	}
 	void enter(Vehicle v) {
