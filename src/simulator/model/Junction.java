@@ -17,7 +17,9 @@ public class Junction extends SimulatedObject{
 	private int _lastGreenTraffic;
 	private LightSwitchingStrategy _lsStrategy;
 	private DequeuingStrategy _dqStrategy;
+	@SuppressWarnings("unused")
 	private int _xCoor;
+	@SuppressWarnings("unused")
 	private int _yCoor;
 	
 	
