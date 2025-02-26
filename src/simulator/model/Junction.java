@@ -80,22 +80,22 @@ public class Junction extends SimulatedObject{
 	}
 	
 	void addIncommingRoad(Road r) {
-		if( r.get_destJunc() != this) //carretera no es de este cruce
+		if( r.getDest() != this) //carretera no es de este cruce
 			 throw new IllegalArgumentException("The incoming road does not form part of the junction");
 		_roadList.add(r);
 		List<Vehicle> lista = new LinkedList<Vehicle>();
 		_listArrayVehicle.add(lista);
 	}
 	void addOutGoingRoad(Road r) {
-		if( r.get_srcJunc() != this) //carretera no es de este cruce
+		if( r.getSrc() != this) //carretera no es de este cruce
 			 throw new IllegalArgumentException("The outgoing road does not form part of the junction");
 		if(_mapJunctionRoad.containsValue(r))
 				throw new IllegalArgumentException("The road is already added");
-		_mapJunctionRoad.put(r.get_destJunc(), r);
+		_mapJunctionRoad.put(r.getDest(), r);
 	}
 	void enter(Vehicle v) {
-		if (v.get_status() != VehicleStatus.PENDING) {
-			Road r = v.get_road();
+		if (v.getStatus() != VehicleStatus.PENDING) {
+			Road r = v.getRoad();
 			int aux = _roadList.indexOf(r); //veo la pos de la carretera
 			_listArrayVehicle.get(aux).add(v); //como estan en el mismo orden, añado el coche a la cola de la carretera
 		}	

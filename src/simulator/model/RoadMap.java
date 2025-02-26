@@ -35,8 +35,8 @@ public class RoadMap{
 	void addRoad(Road r) {
 		if(_stringRoadMap.containsKey(r.getId()))
 			throw new IllegalArgumentException("The road is already on the roadmap");
-		if(!_stringJunctionMap.containsKey(r.get_destJunc().getId()) &&
-				!_stringJunctionMap.containsKey(r.get_srcJunc().getId()))
+		if(!_stringJunctionMap.containsKey(r.getDest().getId()) &&
+				!_stringJunctionMap.containsKey(r.getSrc().getId()))
 			throw new IllegalArgumentException("The junctions connected to the road are not inside the roadmap");
 		_roadList.add(r);
 		_stringRoadMap.put(r._id, r);
@@ -45,8 +45,8 @@ public class RoadMap{
 		if(_stringVehicleMap.containsKey(v.getId()))
 			throw new IllegalArgumentException("The vehicle is already on the roadmap");
 		int j = 0;
-		while (j < v.get_itinerary().size()-1) {
-			if(!_stringRoadMap.containsKey(v.get_itinerary().get(j).roadTo(v.get_itinerary().get(j+1)).getId()))
+		while (j < v.getItinerary().size()-1) {
+			if(!_stringRoadMap.containsKey(v.getItinerary().get(j).roadTo(v.getItinerary().get(j+1)).getId()))
 				throw new IllegalArgumentException("The road where the vehicle lays is not on the roadmap");
 			j++;
 		}
@@ -64,13 +64,13 @@ public class RoadMap{
 	public Vehicle getVehicle(String id) {
 		return _stringVehicleMap.get(id);
 	}
-	public List<Junction> get_junctionList() {
+	public List<Junction> getJunctions() {
 		return Collections.unmodifiableList(_junctionList);
 	}
-	public List<Road> get_roadList() {
+	public List<Road> getRoads() {
 		return Collections.unmodifiableList(_roadList);
 	}
-	public List<Vehicle> get_vehicleList() {
+	public List<Vehicle> getVehicles() {
 		return Collections.unmodifiableList(_vehicleList);
 	}
 	

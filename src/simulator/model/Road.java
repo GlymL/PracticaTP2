@@ -46,9 +46,9 @@ public abstract class Road extends SimulatedObject{
 	}
 	
 	void enter(Vehicle v) {
-		if(v.get_actualSpeed() != 0)
+		if(v.getSpeed() != 0)
 			throw new IllegalArgumentException("The argument speed must be a positive number");
-		if(v.get_location() != 0)
+		if(v.getLocation() != 0)
 			throw new IllegalArgumentException("The argument location must be a positive number");
 			_vehicleList.add(v);
 	}
@@ -104,31 +104,31 @@ public abstract class Road extends SimulatedObject{
 	}
 	
 	//Getter
-	public Junction get_srcJunc() {
+	public Junction getSrc() {
 		return _srcJunc;
 	}
-	public Junction get_destJunc() {
+	public Junction getDest() {
 		return _destJunc;
 	}
-	public int get_maxSpeed() {
+	public int getMaxSpeed() {
 		return _maxSpeed;
 	}
-	public int get_speedLimit() {
+	public int getSpeedLimit() {
 		return _speedLimit;
 	}
-	public int get_contLimit() {
+	public int getContLimit() {
 		return _contLimit;
 	}
-	public int get_contTotal() {
+	public int getTotalCO2() {
 		return _contTotal;
 	}
-	public int get_length() {
+	public int getLength() {
 		return _length;
 	}
-	public Weather get_weather() {
+	public Weather getWeather() {
 		return _weather;
 	}
-	public List<Vehicle> get_vehicleList() {
+	public List<Vehicle> getVehicles() {
 		return Collections.unmodifiableList(_vehicleList);
 	}
 	void set_contTotal(int x) {

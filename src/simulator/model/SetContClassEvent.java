@@ -19,6 +19,6 @@ public class SetContClassEvent extends Event{
 	@Override
 	void execute(RoadMap map) {
 		for(int i = 0; i < _cs.size(); i++)
-			map.getVehicle(_cs.get(i).getFirst()).setContaminationClass((_cs.get(i).getSecond()));
+			map.getVehicle(_cs.get(i).getFirst()).setContClass((_cs.get(i).getSecond()));
 	}
 }

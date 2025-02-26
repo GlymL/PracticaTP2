@@ -36,15 +36,15 @@ public class Vehicle extends SimulatedObject{
 	void advance(int time) { //actualizador
 		if(_status == VehicleStatus.TRAVELING) {
 			int auxLocation = _location;
-			_location = Math.min(_location + _actualSpeed, _road.get_length());
+			_location = Math.min(_location + _actualSpeed, _road.getLength());
 			int distance = _location - auxLocation;
 			_totalDistance += distance;
 			_road.addContamination(distance*_contaminationClass);
 			_contTotal += distance*_contaminationClass;
-			if(_location ==_road.get_length()) {
+			if(_location ==_road.getLength()) {
 				_actualSpeed = 0;
 				_status = VehicleStatus.WAITING;
-				_road.get_destJunc().enter(this);
+				_road.getDest().enter(this);
 			}
 		}
 	}
@@ -74,7 +74,7 @@ public class Vehicle extends SimulatedObject{
 		}
 		else {
 			//si esta viajando tiene que ir a su cruce destino
-			currentJunction = this._road.get_destJunc();
+			currentJunction = this._road.getDest();
 			_road.exit(this);
 		}
 		int nextIndex = this._junctionList.indexOf(currentJunction) + 1;
@@ -106,7 +106,7 @@ public class Vehicle extends SimulatedObject{
 		
 	}
 	
-	void setContaminationClass(int c) {
+	void setContClass(int c) {
 		if(c < 0 || c > 10)
 			throw new IllegalArgumentException("The argument Contamination Class must be an integer number between 0 and 10");
 		else
@@ -114,28 +114,28 @@ public class Vehicle extends SimulatedObject{
 	}
 	
 	//Todos los Getters
-	public List<Junction> get_itinerary() {
+	public List<Junction> getItinerary() {
 		return _junctionList;
 	}
-	public int get_maxSpeed() {
+	public int getMaxSpeed() {
 		return _maxSpeed;
 	}
-	public int get_actualSpeed() {
+	public int getSpeed() {
 		return _actualSpeed;
 	}
-	public VehicleStatus get_status() {
+	public VehicleStatus getStatus() {
 		return _status;
 	}
-	public Road get_road() {
+	public Road getRoad() {
 		return _road;
 	}
-	public int get_location() {
+	public int getLocation() {
 		return _location;
 	}
-	public int get_contaminationClass() {
+	public int getContClass() {
 		return _contaminationClass;
 	}
-	public int get_contTotal() {
+	public int getTotalCO2() {
 		return _contTotal;
 	}
 }

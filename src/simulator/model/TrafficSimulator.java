@@ -26,11 +26,11 @@ public class TrafficSimulator {
 	        e.execute(_rm);
 	    }
 	    if(_time == 1)
-	    	for(Vehicle v : _rm.get_vehicleList())
+	    	for(Vehicle v : _rm.getVehicles())
 	    		v.moveToNextRoad();
-	    for(Junction j : _rm.get_junctionList())
+	    for(Junction j : _rm.getJunctions())
 	    	j.advance(_time);
-	    for(Road r : _rm.get_roadList())
+	    for(Road r : _rm.getRoads())
 	    	r.advance(_time);
 	}
 	public void reset() {
