@@ -1,4 +1,4 @@
-	package simulator.launcher;
+package simulator.launcher;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,11 +18,8 @@ import org.apache.commons.cli.ParseException;
 
 import simulator.control.Controller;
 import simulator.factories.*;
-import simulator.factories.Factory;
-import simulator.model.DequeuingStrategy;
-import simulator.model.Event;
-import simulator.model.LightSwitchingStrategy;
-import simulator.model.TrafficSimulator;
+import simulator.model.*;
+
 
 public class Main {
 
