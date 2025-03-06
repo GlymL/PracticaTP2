@@ -103,6 +103,11 @@ public class Junction extends SimulatedObject{
 	Road roadTo(Junction j) {
 		return _mapJunctionRoad.get(j);
 	}
+	public int getX() {
+		return _xCoor;
+	}
 	
-	
+	public int getY() {
+		return _yCoor;
+	}
 }

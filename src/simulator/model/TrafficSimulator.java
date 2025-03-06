@@ -1,15 +1,17 @@
 package simulator.model;
 
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.json.JSONObject;
 
-public class TrafficSimulator {
+public class TrafficSimulator implements Observable<TrafficSimObserver>  {
 	
 	private RoadMap _rm;
 	private Queue<Event> _eventQueue;
 	private int _time;
+	private List<TrafficSimObserver> _ob;
 	
 	public TrafficSimulator(){
 		_rm = new RoadMap();
@@ -18,6 +20,8 @@ public class TrafficSimulator {
 	}
 	public void addEvent(Event e) {
 		_eventQueue.offer(e); //añade el elemento ordenado
+		for(TrafficSimObserver obs : _ob)
+	    	obs.onEventAdded(_rm, _eventQueue, e,  _time);
 	}
 	public void advance() {
 	   _time++;
@@ -32,11 +36,15 @@ public class TrafficSimulator {
 	    	j.advance(_time);
 	    for(Road r : _rm.getRoads())
 	    	r.advance(_time);
+	    for(TrafficSimObserver obs : _ob)
+	    	obs.onAdvance(_rm, _eventQueue, _time);
 	}
 	public void reset() {
 		_rm.reset();
 		_eventQueue.clear();
 		_time = 0;
+		for(TrafficSimObserver obs : _ob)
+	    	obs.onReset(_rm, _eventQueue, _time);
 	}
 	
 	public JSONObject report() {
@@ -44,5 +52,16 @@ public class TrafficSimulator {
 		j_traffic.put("time", _time);
 		j_traffic.put("state", _rm.report());
 		return j_traffic;
+	}
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		_ob.add(o);
+		for(TrafficSimObserver obs : _ob)
+	    	obs.onRegister(_rm, _eventQueue, _time);
+		
+	}
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		_ob.remove(o);
 	}
 }
