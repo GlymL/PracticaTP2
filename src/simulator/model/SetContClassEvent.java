@@ -21,4 +21,9 @@ public class SetContClassEvent extends Event{
 		for(int i = 0; i < _cs.size(); i++)
 			map.getVehicle(_cs.get(i).getFirst()).setContClass((_cs.get(i).getSecond()));
 	}
+	
+	@Override
+	public String toString() {
+		return "Set ContClass";
+	}
 }

@@ -26,4 +26,8 @@ public class NewVehicleEvent extends Event{
 		Vehicle v = new Vehicle(_id, _maxSpeed, _contClass, jList);
 		map.addVehicle(v);
 	}
+	@Override
+	public String toString() {
+		return "New Vehicle '"+_id+"'";
+	}
 }

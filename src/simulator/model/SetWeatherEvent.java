@@ -18,4 +18,9 @@ public class SetWeatherEvent extends Event{
 		for(int i = 0; i < _ws.size(); i++)
 			map.getRoad(_ws.get(i).getFirst()).setWeather(_ws.get(i).getSecond());
 	}
+	
+	@Override
+	public String toString() {
+		return "Set Weather";
+	}
 }

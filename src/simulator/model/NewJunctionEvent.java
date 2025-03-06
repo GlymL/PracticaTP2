@@ -13,4 +13,8 @@ public class NewJunctionEvent extends Event{
 		map.addJunction(j);
 	}
 	
+	@Override
+	public String toString() {
+		return "New Junction '"+j.getId()+"'";
+	}
 }
