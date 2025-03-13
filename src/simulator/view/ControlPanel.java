@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.BorderLayout;
 import java.util.Collection;
 
 import javax.swing.JButton;
@@ -15,13 +16,20 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
 	private Controller _controller;
 	private JButton _loadFileButton;
+	private JButton _setContClassButton;
 	//private JButton;
 	
 	public ControlPanel(Controller c) {
 		_controller = c;
-		_loadFileButton = new JButton("patata");
-		this.add(_loadFileButton);
+		initGUI();
 	}
+	private void initGUI() {
+		_loadFileButton = new JButton("LoadFileButton");
+		this.add(_loadFileButton);
+		_setContClassButton = new JButton("SetContClass");
+		this.add(_setContClassButton);
+	}
+	
 	@Override
 	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
 		// TODO Auto-generated method stub

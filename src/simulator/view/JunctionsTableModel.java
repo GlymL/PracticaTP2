@@ -9,11 +9,11 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public class JunctionTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class JunctionsTableModel extends AbstractTableModel implements TrafficSimObserver{
 
 	private Controller _controller;
 
-	public JunctionTableModel(Controller c) {
+	public JunctionsTableModel(Controller c) {
 		_controller = c;
 	}
 	@Override

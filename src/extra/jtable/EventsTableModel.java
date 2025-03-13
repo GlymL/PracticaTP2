@@ -31,7 +31,6 @@ public class EventsTableModel extends AbstractTableModel {
 
 	public void reset() {
 		_events.clear();
-		;
 		fireTableDataChanged();
 	}
 

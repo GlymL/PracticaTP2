@@ -31,6 +31,7 @@ public class Main {
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
 	private static int steps = 10;
+	private static String _model = "gui";
 
 	private static void parseArgs(String[] args) {
 	    // define the valid command line options
@@ -41,6 +42,7 @@ public class Main {
 	    try {
 	        CommandLine line = parser.parse(cmdLineOptions, args);
 	        parseHelpOption(line, cmdLineOptions);
+	        parseModeOption(line);
 	        parseInFileOption(line);
 	        parseOutFileOption(line);
 	        parseTicksFileOption(line);
@@ -70,6 +72,8 @@ public class Main {
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(
 				Option.builder("t").longOpt("ticks").hasArg().desc("Ticks to the simulator's main loop (default value is 10).").build());
+		cmdLineOptions.addOption(
+				Option.builder("m").longOpt("mode").hasArg().desc("Where is the program going to execute.").build());
 
 		return cmdLineOptions;
 	}
@@ -84,19 +88,27 @@ public class Main {
 
 	private static void parseInFileOption(CommandLine line) throws ParseException {
 		_inFile = line.getOptionValue("i");
-		if (_inFile == null) {
+		if (_inFile == null && _model != "gui") {
 			throw new ParseException("An events file is missing");
 		}
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
-		_outFile = line.getOptionValue("o");
+		if(!_model.equalsIgnoreCase("gui"))
+			_outFile = line.getOptionValue("o");
 	}
 	private static void parseTicksFileOption(CommandLine line) {
 	    String ticksValue = line.getOptionValue("t");
 	    if (ticksValue != null) {
            	steps = Integer.parseInt(ticksValue);
 	    }
+	}
+	
+	private static void parseModeOption(CommandLine line) {
+	    String model = line.getOptionValue("m");
+	    String cons = "console";
+	    if(model != null && model.equalsIgnoreCase(cons))
+	    	_model = model;
 	}
 
 	private static void initFactories() {
@@ -149,19 +161,32 @@ public class Main {
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startGuiMode();
+		startMode();
+	}
+	
+	private static void startMode() throws IOException {
+		
+		if(_model == "gui")
+			startGuiMode();
+		else if (_model == "console")
+			startBatchMode();
+		else
+			throw new IllegalArgumentException("Mode has an illegal argument");
+			
 	}
 	
 	private static void startGuiMode() throws IOException {
 		
-		InputStream is = new FileInputStream(_inFile);
 		TrafficSimulator ts = new TrafficSimulator();
 		
 		Controller c = new Controller(ts, _eventsFactory);
 		
-		c.loadEvents(is);
-		
-		is.close();
+		if(_inFile != null) {
+			InputStream is = new FileInputStream(_inFile);
+			c.loadEvents(is);		
+			is.close();
+		}
+			
 		
 		c.run(steps);
 		
