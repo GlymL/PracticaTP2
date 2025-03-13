@@ -74,7 +74,7 @@ public class TestWindow extends JFrame {
 		// ...		
 		
 		
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		//this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 	}
