@@ -1,6 +1,7 @@
 package  simulator.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,12 +15,10 @@ public class Junction extends SimulatedObject{
 	private Map<Junction, Road> _mapJunctionRoad;
 	private List<List<Vehicle>> _listArrayVehicle;
 	private int _currentGreenTraffic;
-	private int _lastGreenTraffic;
+	private int _lastGreenTraffic; // ultimo tick en el que cambio
 	private LightSwitchingStrategy _lsStrategy;
 	private DequeuingStrategy _dqStrategy;
-	@SuppressWarnings("unused")
 	private int _xCoor;
-	@SuppressWarnings("unused")
 	private int _yCoor;
 	
 	
@@ -109,5 +108,12 @@ public class Junction extends SimulatedObject{
 	
 	public int getY() {
 		return _yCoor;
+	}
+	public int getGreenLightIndex() {
+		return _currentGreenTraffic;
+	}
+	
+	public List<Road>getInRoads() {
+		return Collections.unmodifiableList(_roadList);
 	}
 }

@@ -1,12 +1,15 @@
 package simulator.launcher;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -19,6 +22,7 @@ import org.apache.commons.cli.ParseException;
 import simulator.control.Controller;
 import simulator.factories.*;
 import simulator.model.*;
+import simulator.view.TestWindow;
 
 
 public class Main {
@@ -133,6 +137,7 @@ public class Main {
 		TrafficSimulator ts = new TrafficSimulator();
 		
 		Controller c = new Controller(ts, _eventsFactory);
+	
 		
 		c.loadEvents(is);
 		
@@ -144,7 +149,29 @@ public class Main {
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
+		startGuiMode();
+	}
+	
+	private static void startGuiMode() throws IOException {
+		
+		InputStream is = new FileInputStream(_inFile);
+		TrafficSimulator ts = new TrafficSimulator();
+		
+		Controller c = new Controller(ts, _eventsFactory);
+		
+		c.loadEvents(is);
+		
+		is.close();
+		
+		c.run(steps);
+		
+		SwingUtilities.invokeLater(new Runnable() {	
+			@Override
+			public void run() {
+				new TestWindow(c);
+			}
+		}); 
+		
 	}
 
 	// example command lines:
@@ -160,7 +187,7 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+	
 	}
 
 }

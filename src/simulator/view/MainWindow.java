@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
 
 	private JPanel createViewPanel(JComponent c, String title) {
 		JPanel p = new JPanel( new BorderLayout() );
-            // TODO add a framed border to p with title
+		p.add(new JFrame(title));
 		p.add(new JScrollPane(c));
 		return p;
 	}
