@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
@@ -16,27 +17,18 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	
 	private static final long serialVersionUID = 1L;
 
-	private List<Event> _events;
-	private String[] _colNames = { "Time", "Desc" };
+	private List<Junction> _junctions;
+	private String[] _colNames = { "ID", "Green", "Queues" };
 	private Controller _c;
 
 	public JunctionsTableModel(Controller c) {
-		_events = new ArrayList<>();
+		_junctions = new ArrayList<>();
 		_c = c;
-	}
-
-	public void addEvent(Event e) {
-		_events.add(e);
-		// observar que si no refresco la tabla no se carga
-		// La tabla es la represantación visual de una estructura de datos,
-		// en este caso de un ArrayList, hay que notificar los cambios.
-
-		// We need to notify changes, otherwise the table does not refresh.
-		fireTableDataChanged();
+		_c.addObserver(this);
 	}
 
 	public void reset() {
-		_events.clear();
+		_junctions.clear();
 		fireTableDataChanged();
 	}
 
@@ -66,7 +58,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	//
 	// the number of row, like those in the events list
 	public int getRowCount() {
-		return _events == null ? 0 : _events.size();
+		return _junctions == null ? 0 : _junctions.size();
 	}
 
 	@Override
@@ -80,17 +72,26 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
-			s = _events.get(rowIndex).getTime();
+			s = _junctions.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _events.get(rowIndex).toString();
+			s = _junctions.get(rowIndex).getGreenLightIndex();
 			break;
+		case 2:
+			s = _junctions.get(rowIndex).getInRoads();
 		}
 		return s;
 	}
 
+	private void loadTable(RoadMap map) {
+		for(Junction j : map.getJunctions()) {
+			if(_junctions.indexOf(j) == -1)
+			_junctions.add(j);
+		}
+			
+	}
 	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {fireTableDataChanged();}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {this.loadTable(map);}
 
 	@Override
 	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
@@ -99,5 +100,6 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {loadTable(map);}
+
 }

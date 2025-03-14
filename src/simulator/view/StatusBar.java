@@ -15,6 +15,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	
 	public StatusBar(Controller c) {
 		_controller = c;
+		_controller.addObserver(this);
 	}
 
 	@Override

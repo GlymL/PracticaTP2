@@ -1,6 +1,11 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 
 import javax.swing.JButton;
@@ -20,41 +25,54 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JButton _loadFileButton;
 	private JButton _setContClassButton;
 	private JButton _setWeatherButton;
+	private JButton _executeButton;
 	private JButton _exitButton;
 	
 	public ControlPanel(Controller c) {
 		_controller = c;
 		initGUI();
+		_controller.addObserver(this);
 	}
 	private void initGUI() {
 		_loadFileButton = new JButton("LoadFileButton");
-		_loadFileButton.addActionListener((e) -> loadFile());
+		_loadFileButton.addActionListener((e) -> {
+			try {
+				loadFile();
+			} catch (Throwable e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		this.add(_loadFileButton);
 		_setContClassButton = new JButton("SetContClass");
 		this.add(_setContClassButton);
 		_setWeatherButton = new JButton("Set Weather");
 		this.add(_setWeatherButton);
+		_executeButton = new JButton("Execute button");
+		_executeButton.addActionListener((e) -> _controller.run(1));
+		this.add(_executeButton);
 		_exitButton = new JButton("Exit Button");
 		_exitButton.addActionListener((e) -> System.exit(0));
 		this.add(_exitButton);
 	}
 	
-	private Object loadFile() {
+	private Object loadFile() throws Throwable {
 		JFileChooser chooser = new JFileChooser();
-		try {
+//		try {
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-	        "JSON files", "json");
+	        "JSON file", "json");
 	    chooser.setFileFilter(filter);
 	    int returnVal = chooser.showOpenDialog(this);
-	    if(returnVal == JFileChooser.APPROVE_OPTION) 
-	       System.out.println("You chose to open this file: " +
-	            chooser.getSelectedFile().getName());
-	    throw new UnsupportedOperationException();
-		} catch (Exception e){
-	    	JPanel j = new JPanel();
-	    	j.add(new JLabel("A"));
-	    	
+	    if(returnVal == JFileChooser.APPROVE_OPTION){
+	    	_controller.reset();
+	    	File s = chooser.getSelectedFile();
+	    	InputStream is = new FileInputStream(s);
+	    	_controller.loadEvents(is);
 	    }
+//		} catch (Exception e){
+//	    	JPanel j = new JPanel();
+//	    	j.add(new JLabel("A"));
+//	    }
 	    
 	 return chooser;
 	}

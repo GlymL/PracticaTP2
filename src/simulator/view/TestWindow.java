@@ -28,10 +28,6 @@ public class TestWindow extends JFrame {
 		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
 		
-//		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
-//		mainPanel.add(new StatusBar(_ctrl),BorderLayout.PAGE_END);
-		
-		
 		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
 		mainPanel.add(new StatusBar(_ctrl),BorderLayout.PAGE_END);
 		
@@ -73,8 +69,8 @@ public class TestWindow extends JFrame {
 		// TODO add a map for MapByRoadComponent
 		// ...		
 		
-		
-		//this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 	}

@@ -181,21 +181,21 @@ public class Main {
 		
 		Controller c = new Controller(ts, _eventsFactory);
 		
-		if(_inFile != null) {
-			InputStream is = new FileInputStream(_inFile);
-			c.loadEvents(is);		
-			is.close();
-		}
-			
-		
-		c.run(steps);
-		
 		SwingUtilities.invokeLater(new Runnable() {	
 			@Override
 			public void run() {
 				new TestWindow(c);
 			}
 		}); 
+		
+		if(_inFile != null) {
+			InputStream is = new FileInputStream(_inFile);
+			c.loadEvents(is);		
+			is.close();
+		}
+			
+		c.run(steps);
+		
 		
 	}
 
