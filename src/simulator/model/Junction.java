@@ -48,8 +48,9 @@ public class Junction extends SimulatedObject{
 		for(Vehicle v : _listArrayVehicle.get(_currentGreenTraffic))
 			if (removable.contains(v)) {
 				v.moveToNextRoad();
-				_listArrayVehicle.get(_currentGreenTraffic).remove(v);
 			}
+		for(Vehicle v : removable)
+			_listArrayVehicle.get(_currentGreenTraffic).remove(v);
 		}
 		int newGreenTraffic = _lsStrategy.chooseNextGreen(_roadList, _listArrayVehicle, _currentGreenTraffic, _lastGreenTraffic, time);
 		if(newGreenTraffic != _currentGreenTraffic)
@@ -113,7 +114,17 @@ public class Junction extends SimulatedObject{
 		return _currentGreenTraffic;
 	}
 	
-	public List<Road>getInRoads() {
+	public List<Road> getInRoads() {
 		return Collections.unmodifiableList(_roadList);
+	}
+	public List<Vehicle> getQueue(Road road){
+		List<Vehicle> r = new ArrayList<>();
+		int i = _roadList.indexOf(road);
+		List<Vehicle> lv = _listArrayVehicle.get(i);
+		for(Vehicle v : lv) {
+			if(v.getLocation() == _roadList.get(i).getLength())
+			r.add(v);
+		}
+		return r;
 	}
 }

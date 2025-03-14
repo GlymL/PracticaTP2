@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.Junction;
+import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
@@ -75,10 +76,17 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			s = _junctions.get(rowIndex).getId();
 			break;
 		case 1:
-			s = _junctions.get(rowIndex).getGreenLightIndex();
+			int i = _junctions.get(rowIndex).getGreenLightIndex();
+			if (i == -1)
+				s = "NONE";
+			else
+				s = _junctions.get(rowIndex).getInRoads().get(i).toString();
 			break;
 		case 2:
-			s = _junctions.get(rowIndex).getInRoads();
+			s = "";
+			for(Road r : _junctions.get(rowIndex).getInRoads())
+			s += r.getId() + ": " + _junctions.get(rowIndex).getQueue(r)+ " ";
+			break;
 		}
 		return s;
 	}
@@ -88,6 +96,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			if(_junctions.indexOf(j) == -1)
 			_junctions.add(j);
 		}
+		fireTableDataChanged();
 			
 	}
 	@Override
@@ -97,7 +106,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();fireTableDataChanged();}
 
 	@Override
 	public void onRegister(RoadMap map, Collection<Event> events, int time) {loadTable(map);}
