@@ -1,25 +1,26 @@
 package simulator.view;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import simulator.control.Controller;
@@ -29,11 +30,16 @@ import simulator.model.TrafficSimObserver;
 
 public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controller _controller;
 	private JButton _loadFileButton;
 	private JButton _setContClassButton;
 	private JButton _setWeatherButton;
 	private JButton _executeButton;
+	private JButton _stopButton;
 	private JButton _exitButton;
 	
 	public ControlPanel(Controller c) {
@@ -43,31 +49,51 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 	private void initGUI() {
 		
-		_loadFileButton = new JButton(new ImageIcon(loadImage("open.png")));
-		_loadFileButton.addActionListener((e) -> {
-			try {
-				loadFile();
-			} catch (Throwable e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
-		this.add(_loadFileButton);
+		JToolBar bar = new JToolBar();
+		
+		_loadFileButton = new JButton(new ImageIcon(loadImage("open.png")));
+		_loadFileButton.addActionListener((e) -> {loadFile();});
+		bar.add(_loadFileButton);
+		
+		separator(bar);
+		
 		_setContClassButton = new JButton(new ImageIcon(loadImage("co2class.png")));
-		this.add(_setContClassButton);
+		_setContClassButton.addActionListener((e) -> {addCO2ClassEvent();});
+		bar.add(_setContClassButton);
+		
 		_setWeatherButton = new JButton(new ImageIcon(loadImage("weather.png")));
-		this.add(_setWeatherButton);
+		bar.add(_setWeatherButton);
+		
+		separator(bar);
+		
 		_executeButton = new JButton(new ImageIcon(loadImage("run.png")));
 		_executeButton.addActionListener((e) -> _controller.run(1));
-		this.add(_executeButton);
+		bar.add(_executeButton);
+		
+		_stopButton = new JButton(new ImageIcon(loadImage("stop.png")));
+		bar.add(_stopButton);
+		
+		JLabel ticks = new JLabel("Ticks: ");
+		JSpinner spin = new JSpinner();
+		spin.setMaximumSize(new Dimension(2000, 50));
+		spin.setValue(10);
+		ticks.add(spin);
+		bar.add(ticks);
+		bar.add(spin);
+		
+		
+		bar.add(Box.createHorizontalGlue());
+		separator(bar);
 		_exitButton = new JButton(new ImageIcon(loadImage("exit.png")));
 		_exitButton.addActionListener((e) -> System.exit(0));
-		this.add(_exitButton);
+		bar.add(_exitButton);
+		this.add(bar);
 	}
 	
 	private Object loadFile(){
-		JFileChooser chooser = new JFileChooser(new File("resources"));
+		JFileChooser chooser = new JFileChooser(new File("resources/examples"));
 		try {
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
 	        "JSON file", "json");
@@ -85,34 +111,35 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	   	 return chooser;
 	}
 	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {}
 
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
+	
 	private Image loadImage(String img) {
 		Image i = null;
 		try {
 			return ImageIO.read(new File("resources/icons/" + img));
-		} catch (IOException e) {
-		}
+		} catch (IOException e) {}
 		return i;
+	}
+	
+	private void separator(JToolBar bar) {
+		bar.addSeparator();
+		JSeparator sep = new JSeparator(JSeparator.VERTICAL);
+		sep.setMaximumSize(new Dimension(0, 20));
+		bar.add(sep);
+		bar.addSeparator();
+	}
+	
+	private void addCO2ClassEvent() {
+		// TODO Auto-generated method stub
+		
 	}
 }

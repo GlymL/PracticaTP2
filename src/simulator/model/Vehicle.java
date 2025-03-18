@@ -138,4 +138,7 @@ public class Vehicle extends SimulatedObject{
 	public int getTotalCO2() {
 		return _contTotal;
 	}
+	public int getTotalDistance() {
+		return _totalDistance;
+	}
 }

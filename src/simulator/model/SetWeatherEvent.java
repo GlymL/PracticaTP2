@@ -20,7 +20,16 @@ public class SetWeatherEvent extends Event{
 	}
 	
 	@Override
-	public String toString() {
-		return "Set Weather";
+		public String toString() {
+		String string = "Set ContClass [";
+		for (int i = 0; i < _ws.size(); i++) {
+			Pair <String, Weather> p = _ws.get(i);
+			if(i == _ws.size()-1)
+				string+="("+ p.getFirst() + ", " + p.getSecond().toString() + ")";
+			else
+				string+="("+ p.getFirst() + ", " + p.getSecond().toString() + "), ";
+		}
+		string+= "]";
+		return string;
 	}
 }

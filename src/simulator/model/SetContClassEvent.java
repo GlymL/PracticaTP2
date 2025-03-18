@@ -24,6 +24,15 @@ public class SetContClassEvent extends Event{
 	
 	@Override
 	public String toString() {
-		return "Set ContClass";
+		String string = "Set ContClass [";
+		for (int i = 0; i < _cs.size(); i++) {
+			Pair <String, Integer> p = _cs.get(i);
+			if(i == _cs.size()-1)
+				string+="("+ p.getFirst() + ", " + p.getSecond() + ")";
+			else
+				string+="("+ p.getFirst() + ", " + p.getSecond() + "), ";
+		}
+		string+= "]";
+		return string;
 	}
 }

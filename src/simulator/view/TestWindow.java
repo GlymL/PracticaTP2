@@ -10,12 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import simulator.control.Controller;
 
 public class TestWindow extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controller _ctrl;
 
 	public TestWindow(Controller ctrl) {
@@ -70,7 +73,7 @@ public class TestWindow extends JFrame {
 		// ...		
 		
 
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 	}

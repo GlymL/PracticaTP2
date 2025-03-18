@@ -11,35 +11,33 @@ import simulator.model.TrafficSimObserver;
 
 public class StatusBar extends JPanel implements TrafficSimObserver {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controller _controller;
 	
 	public StatusBar(Controller c) {
 		_controller = c;
 		_controller.addObserver(this);
+		initGUI();
 	}
 
-	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
+	private void initGUI() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {}
+
+	@Override
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
 
 }
