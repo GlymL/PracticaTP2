@@ -21,7 +21,7 @@ import org.apache.commons.cli.ParseException;
 import simulator.control.Controller;
 import simulator.factories.*;
 import simulator.model.*;
-import simulator.view.TestWindow;
+import simulator.view.MainWindow;
 
 
 public class Main {
@@ -183,7 +183,7 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {	
 			@Override
 			public void run() {
-				new TestWindow(c);
+				new MainWindow(c);
 			}
 		}); 
 		

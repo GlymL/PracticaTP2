@@ -106,7 +106,7 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();fireTableDataChanged();}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
 
 	@Override
 	public void onRegister(RoadMap map, Collection<Event> events, int time) {loadTable(map);}

@@ -20,7 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import simulator.control.Controller;
@@ -41,6 +42,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JButton _executeButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
+	private Boolean _stopped = false;
 	
 	public ControlPanel(Controller c) {
 		_controller = c;
@@ -69,16 +71,18 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		separator(bar);
 		
 		_executeButton = new JButton(new ImageIcon(loadImage("run.png")));
-		_executeButton.addActionListener((e) -> _controller.run(1));
 		bar.add(_executeButton);
 		
 		_stopButton = new JButton(new ImageIcon(loadImage("stop.png")));
+		_stopButton.addActionListener((e) ->_stopped = true);
 		bar.add(_stopButton);
 		
 		JLabel ticks = new JLabel("Ticks: ");
-		JSpinner spin = new JSpinner();
+		SpinnerNumberModel s = new SpinnerNumberModel();
+		JSpinner spin = new JSpinner(s);
 		spin.setMaximumSize(new Dimension(2000, 50));
 		spin.setValue(10);
+		_executeButton.addActionListener((e) -> {_stopped = false; advance(s);});
 		ticks.add(spin);
 		bar.add(ticks);
 		bar.add(spin);
@@ -87,11 +91,51 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		bar.add(Box.createHorizontalGlue());
 		separator(bar);
 		_exitButton = new JButton(new ImageIcon(loadImage("exit.png")));
-		_exitButton.addActionListener((e) -> System.exit(0));
+		_exitButton.addActionListener((e) -> close(bar));
 		bar.add(_exitButton);
 		this.add(bar);
 	}
 	
+	private void advance(SpinnerNumberModel s) {
+		runSim (s.getNumber().intValue());
+	}
+	private void runSim(int n) {
+		if (n > 0 && !_stopped) {
+			_loadFileButton.setEnabled(false);
+			_setContClassButton.setEnabled(false);
+			_setWeatherButton.setEnabled(false);
+			_executeButton.setEnabled(false);
+			_exitButton.setEnabled(false);
+			try {
+				_controller.run(1);
+	         		SwingUtilities.invokeLater(() -> runSim(n - 1));
+			} catch (Exception e) {
+				JOptionPane.showConfirmDialog(this, e, "Error en la simulacion", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+				_stopped = true;
+				_loadFileButton.setEnabled(true);
+				_setContClassButton.setEnabled(true);
+				_setWeatherButton.setEnabled(true);
+				_executeButton.setEnabled(true);
+				_exitButton.setEnabled(true);
+			}
+		} else {
+			_stopped = true;
+			_loadFileButton.setEnabled(true);
+			_setContClassButton.setEnabled(true);
+			_setWeatherButton.setEnabled(true);
+			_executeButton.setEnabled(true);
+			_exitButton.setEnabled(true);
+		}
+	}
+	
+	
+	private void close(JToolBar bar) {
+		int option = JOptionPane.showConfirmDialog
+				(bar, "Estas seguro de que quieres cerrar el programa?", "Error en la apertura de fichero", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		if(option == 0)
+			System.exit(0);
+		
+	}
 	private Object loadFile(){
 		JFileChooser chooser = new JFileChooser(new File("resources/examples"));
 		try {
@@ -106,7 +150,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	    	_controller.loadEvents(is);
 	    }
 		} catch (Exception e){
-			JOptionPane.showConfirmDialog(chooser, e, "Error en la apertura de fichero", JOptionPane.CLOSED_OPTION);
+			JOptionPane.showConfirmDialog(chooser, e, "Error en la apertura de fichero", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
 	    }
 	   	 return chooser;
 	}
