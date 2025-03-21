@@ -13,6 +13,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private RoadMap _rm = null;
 	private Controller _controller;
 	private JButton _loadFileButton;
 	private JButton _setContClassButton;
@@ -42,12 +44,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	private JButton _executeButton;
 	private JButton _stopButton;
 	private JButton _exitButton;
+	private ChangeCO2ClassDialog _CO2Event;
+	private JDialog _weatherEvent;
 	private Boolean _stopped = false;
 	
 	public ControlPanel(Controller c) {
 		_controller = c;
-		initGUI();
 		_controller.addObserver(this);
+		initGUI();
 	}
 	private void initGUI() {
 		
@@ -91,9 +95,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		bar.add(Box.createHorizontalGlue());
 		separator(bar);
 		_exitButton = new JButton(new ImageIcon(loadImage("exit.png")));
-		_exitButton.addActionListener((e) -> close(bar));
+		_exitButton.addActionListener((e) -> close());
 		bar.add(_exitButton);
 		this.add(bar);
+		
+		_CO2Event = new ChangeCO2ClassDialog(_rm);
 	}
 	
 	private void advance(SpinnerNumberModel s) {
@@ -129,9 +135,9 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 	
 	
-	private void close(JToolBar bar) {
+	private void close() {
 		int option = JOptionPane.showConfirmDialog
-				(bar, "Estas seguro de que quieres cerrar el programa?", "Error en la apertura de fichero", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+				(this, "Estas seguro de que quieres cerrar el programa?", "Salida del programa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if(option == 0)
 			System.exit(0);
 		
@@ -164,7 +170,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	public void onReset(RoadMap map, Collection<Event> events, int time) {}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {if(_rm == null) _rm = map;}
 	
 	private Image loadImage(String img) {
 		Image i = null;
@@ -184,6 +190,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	
 	private void addCO2ClassEvent() {
 		// TODO Auto-generated method stub
-		
+		_CO2Event.open();
 	}
 }

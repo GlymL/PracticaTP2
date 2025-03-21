@@ -45,8 +45,8 @@ public class MainWindow extends JFrame {
 		JPanel mapsPanel = new JPanel();
 		mapsPanel.setLayout(new BoxLayout(mapsPanel, BoxLayout.Y_AXIS));
 		viewsPanel.add(mapsPanel);
-		// tables
 		
+		// tables
 		JPanel eventsView = createViewPanel(new JTable(new EventsTableModel(_ctrl)), "Events");
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(eventsView);
@@ -62,6 +62,7 @@ public class MainWindow extends JFrame {
 		JPanel junctionView = createViewPanel(new JTable(new JunctionsTableModel(_ctrl)), "Junctions");
 		junctionView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(junctionView);
+		
 		// maps
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400));
@@ -70,9 +71,6 @@ public class MainWindow extends JFrame {
 		JPanel mapByRoadView = createViewPanel(new MapByRoadComponent(_ctrl), "Map by Road");
 		mapByRoadView.setPreferredSize(new Dimension(500, 400));
 		mapsPanel.add(mapByRoadView);
-		// TODO add a map for MapByRoadComponent
-		// ...		
-		
 
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
