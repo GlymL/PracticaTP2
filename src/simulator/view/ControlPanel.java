@@ -36,7 +36,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private RoadMap _rm = null;
 	private Controller _controller;
 	private JButton _loadFileButton;
 	private JButton _setContClassButton;
@@ -99,7 +98,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		bar.add(_exitButton);
 		this.add(bar);
 		
-		_CO2Event = new ChangeCO2ClassDialog(_rm);
+		_CO2Event = new ChangeCO2ClassDialog(_controller);
 	}
 	
 	private void advance(SpinnerNumberModel s) {
@@ -170,7 +169,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	public void onReset(RoadMap map, Collection<Event> events, int time) {}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {if(_rm == null) _rm = map;}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
 	
 	private Image loadImage(String img) {
 		Image i = null;
