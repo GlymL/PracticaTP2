@@ -165,9 +165,9 @@ public class Main {
 	
 	private static void startMode() throws IOException {
 		
-		if(_model == "gui")
+		if(_model.equalsIgnoreCase("gui"))
 			startGuiMode();
-		else if (_model == "console")
+		else if (_model.equalsIgnoreCase("console"))
 			startBatchMode();
 		else
 			throw new IllegalArgumentException("Mode has an illegal argument");
@@ -192,10 +192,6 @@ public class Main {
 			c.loadEvents(is);		
 			is.close();
 		}
-			
-		c.run(steps);
-		
-		
 	}
 
 	// example command lines:

@@ -2,21 +2,20 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 import simulator.control.Controller;
@@ -24,6 +23,7 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.SetContClassEvent;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Vehicle;
 import simulator.misc.Pair;
 
 public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
@@ -32,21 +32,19 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private RoadMap _rm = null;
+	private List<String> _vIds = new ArrayList<>();
 	private Controller _c;
-	int time;
+	int _time;
 	
 	 ChangeCO2ClassDialog(Controller c){
 		 super();
 		 _c = c;
 		 c.addObserver(this);
 		 initGUI();
-		 time = 0;
 	 }
 
 
 	private void initGUI() {
-		// TODO Auto-generated method stub
 		setTitle("Change CO2 Class");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -65,25 +63,28 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 		
 		JLabel vLabel = new JLabel("Vehicle: ");
-		SpinnerModel vSpinModel;
-		if(_rm.getVehicles().size() != 0)
-			vSpinModel = new SpinnerListModel(_rm.getVehicles());
-		else
-			vSpinModel = new SpinnerNumberModel();
-		JSpinner vSpin = new JSpinner(vSpinModel);
-		vSpin.setMaximumSize(new Dimension(200, 20));
-		vLabel.add(vSpin);
+		Vector<String> vComboModel = new Vector<>();
+		if(_vIds != null)
+			vComboModel = new Vector<>(_vIds);
+		JComboBox<String> vBox = new JComboBox<>(vComboModel);
+		vBox.setMaximumSize(new Dimension(200, 20));
+		vLabel.add(vBox);
 		spinnerPanel.add(vLabel);
-		spinnerPanel.add(vSpin);
+		spinnerPanel.add(vBox);
 		
 		
 		JLabel CO2Class = new JLabel("CO2Class: ");
-		SpinnerNumberModel CO2spinModel = new SpinnerNumberModel(0, 0, 9, 1);
-		JSpinner CO2spin = new JSpinner(CO2spinModel);
-		CO2spin.setMaximumSize(new Dimension(200, 20));
-		CO2Class.add(CO2spin);
+		Vector<Integer> cComboModel = new Vector<>();
+		cComboModel = new Vector<>();
+		for(int i = 0; i < 11; i++) {
+			Integer ig = Integer.valueOf(i);
+			cComboModel.add(ig);
+		}
+		JComboBox<Integer> cBox = new JComboBox<>(cComboModel);
+		cBox.setMaximumSize(new Dimension(200, 20));
+		CO2Class.add(cBox);
 		spinnerPanel.add(CO2Class);
-		spinnerPanel.add(CO2spin);
+		spinnerPanel.add(cBox);
 		
 		
 		JLabel tLabel = new JLabel("Ticks: ");
@@ -108,17 +109,16 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		
 		JButton OKButton = new JButton("OK");
 		OKButton.addActionListener((e) -> {
-			if(_rm == null);
-			else {
+			if(_vIds.size() != 0) {
 				ArrayList<Pair<String, Integer>> cs = new ArrayList<Pair<String, Integer>>();
-				Pair<String, Integer> p = new Pair<>(vSpinModel.getValue().toString(), tSpinModel.getNumber().intValue());
+				String car = vBox.getSelectedItem().toString();
+				Integer contClass = Integer.parseInt(cBox.getSelectedItem().toString());
+				Pair<String, Integer> p = new Pair<>(car, contClass);
 				cs.add(p);
-				SetContClassEvent event = new SetContClassEvent(time + tSpinModel.getNumber().intValue(), cs);
-				this.setVisible(false);
+				SetContClassEvent event = new SetContClassEvent(_time + tSpinModel.getNumber().intValue(), cs);
 				_c.addEvent(event);
 			}
-		
-		
+			this.setVisible(false);
 		});
 		buttonPanel.add(OKButton);
 		
@@ -132,7 +132,11 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 
 	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {time++;_rm = map;}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {_time = time;
+	if(map != null)
+		for(Vehicle v: map.getVehicles())
+			_vIds.add(v.toString());
+	}
 
 
 	@Override
@@ -140,10 +144,15 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {time = 0; _rm = null;}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {time = 0; _vIds.clear();}
 
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {_rm = map;}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {_time = time;
+	if(map != null)
+		for(Vehicle v: map.getVehicles())
+			_vIds.add(v.toString());
+	}
+
 
 }
