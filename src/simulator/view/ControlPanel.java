@@ -13,7 +13,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -76,6 +75,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		
 		_setWeatherButton = new JButton(new ImageIcon(loadImage("weather.png")));
 		_setWeatherButton.setToolTipText("Change Weather of the road");
+		_setWeatherButton.addActionListener((e) -> {
+			ChangeWeatherDialog _weatherEvent = new ChangeWeatherDialog(_controller);
+			_weatherEvent.open();
+			}
+		);
 		bar.add(_setWeatherButton);
 		
 		separator(bar);

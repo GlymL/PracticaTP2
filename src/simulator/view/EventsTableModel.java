@@ -83,8 +83,6 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
 		eventDelete(time);
 	}
-
-
 	@Override
 	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {this.addEvent(e);}
 
@@ -92,5 +90,9 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {
+		for(Event e : events)
+			if(!_events.contains(e))
+				this.addEvent(e);
+	}
 }

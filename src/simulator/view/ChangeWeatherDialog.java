@@ -20,23 +20,25 @@ import javax.swing.SpinnerNumberModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Road;
 import simulator.model.RoadMap;
-import simulator.model.SetContClassEvent;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
+import simulator.model.Weather;
 import simulator.misc.Pair;
 
-public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
+public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private List<String> _vIds = new ArrayList<>();
+	private List<String> _rIds = new ArrayList<>();
 	private Controller _c;
 	int _time;
 	
-	 ChangeCO2ClassDialog(Controller c){
+	 ChangeWeatherDialog(Controller c){
 		 super();
 		 _c = c;
 		 c.addObserver(this);
@@ -45,11 +47,11 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 
 	private void initGUI() {
-		setTitle("Change CO2 Class");
+		setTitle("Change Road Weather");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-		JLabel text = new JLabel("<html><p>Schedule an event to change the CO2 class of a vehicle after a given number of simulation ticks from now</p></html>");
+		JLabel text = new JLabel("<html><p>Schedule an event to change the weather of a road after a given number of simulation ticks from now</p></html>");
 		text.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(text);
 
@@ -62,10 +64,10 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.PAGE_START);
 
 		
-		JLabel vLabel = new JLabel("Vehicle: ");
+		JLabel vLabel = new JLabel("Road: ");
 		Vector<String> vComboModel = new Vector<>();
-		if(_vIds != null)
-			vComboModel = new Vector<>(_vIds);
+		if(_rIds != null)
+			vComboModel = new Vector<>(_rIds);
 		JComboBox<String> vBox = new JComboBox<>(vComboModel);
 		vBox.setMaximumSize(new Dimension(200, 20));
 		vLabel.add(vBox);
@@ -73,14 +75,12 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.add(vBox);
 		
 		
-		JLabel CO2Class = new JLabel("CO2Class: ");
-		Vector<Integer> cComboModel = new Vector<>();
+		JLabel CO2Class = new JLabel("Weather: ");
+		Vector<Weather> cComboModel = new Vector<>();
 		cComboModel = new Vector<>();
-		for(int i = 0; i < 11; i++) {
-			Integer ig = Integer.valueOf(i);
-			cComboModel.add(ig);
-		}
-		JComboBox<Integer> cBox = new JComboBox<>(cComboModel);
+		for(Weather w : Weather.values())
+			cComboModel.add(w);
+		JComboBox<Weather> cBox = new JComboBox<>(cComboModel);
 		cBox.setMaximumSize(new Dimension(200, 20));
 		CO2Class.add(cBox);
 		spinnerPanel.add(CO2Class);
@@ -109,13 +109,13 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		
 		JButton OKButton = new JButton("OK");
 		OKButton.addActionListener((e) -> {
-			if(_vIds.size() != 0) {
-				ArrayList<Pair<String, Integer>> cs = new ArrayList<Pair<String, Integer>>();
+			if(_rIds.size() != 0) {
+				ArrayList<Pair<String, Weather>> ws = new ArrayList<Pair<String, Weather>>();
 				String car = vBox.getSelectedItem().toString();
-				Integer contClass = Integer.parseInt(cBox.getSelectedItem().toString());
-				Pair<String, Integer> p = new Pair<>(car, contClass);
-				cs.add(p);
-				SetContClassEvent event = new SetContClassEvent(_time + tSpinModel.getNumber().intValue(), cs);
+				Weather w = Weather.valueOf(cBox.getSelectedItem().toString());
+				Pair<String, Weather> p = new Pair<>(car, w);
+				ws.add(p);
+				SetWeatherEvent event = new SetWeatherEvent(_time + tSpinModel.getNumber().intValue(), ws);
 				_c.addEvent(event);
 			}
 			this.setVisible(false);
@@ -135,7 +135,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 	public void onAdvance(RoadMap map, Collection<Event> events, int time) {_time = time;
 	if(map != null)
 		for(Vehicle v: map.getVehicles())
-			_vIds.add(v.toString());
+			_rIds.add(v.toString());
 	}
 
 
@@ -144,14 +144,14 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {time = 0; _vIds.clear();}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {time = 0; _rIds.clear();}
 
 
 	@Override
 	public void onRegister(RoadMap map, Collection<Event> events, int time) {_time = time;
 	if(map != null)
-		for(Vehicle v: map.getVehicles())
-			_vIds.add(v.toString());
+		for(Road r: map.getRoads())
+			_rIds.add(r.toString());
 	}
 
 

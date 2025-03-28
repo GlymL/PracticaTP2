@@ -128,6 +128,7 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 				break;
 			case "WINDY":
 				w = "wind";
+				break;
 			case "STORM":
 				w = "storm";
 				break;

@@ -179,6 +179,11 @@ public class Main {
 		TrafficSimulator ts = new TrafficSimulator();
 		
 		Controller c = new Controller(ts, _eventsFactory);
+		if(_inFile != null) {
+			InputStream is = new FileInputStream(_inFile);
+			c.loadEvents(is);		
+			is.close();
+		}
 		
 		SwingUtilities.invokeLater(new Runnable() {	
 			@Override
@@ -187,11 +192,6 @@ public class Main {
 			}
 		}); 
 		
-		if(_inFile != null) {
-			InputStream is = new FileInputStream(_inFile);
-			c.loadEvents(is);		
-			is.close();
-		}
 	}
 
 	// example command lines:
