@@ -2,10 +2,12 @@ package simulator.view;
 
 import java.util.Collection;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JToolBar;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -28,12 +30,17 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	private void initGUI() {
-		JPanel StatusPanel = new JPanel();
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		JToolBar bar = new JToolBar();
+		
+		JPanel StatusPanel = new JPanel();
 		tickLabel = new JLabel("Time: 0");
 		StatusPanel.add(tickLabel);
 		StatusPanel.add(new JSeparator());
-		this.add(StatusPanel);
+		bar.add(Box.createGlue());
+		bar.add(StatusPanel);
+		this.add(bar);
 	}
 
 	@Override
