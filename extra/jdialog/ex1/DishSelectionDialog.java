@@ -1,4 +1,4 @@
-package extra.jdialog.ex1;
+package jdialog.ex1;
 
 import javax.swing.JPanel;
 import javax.swing.Box;

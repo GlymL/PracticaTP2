@@ -1,4 +1,4 @@
-package extra.jtable;
+package jtable;
 
 public class EventEx {
 

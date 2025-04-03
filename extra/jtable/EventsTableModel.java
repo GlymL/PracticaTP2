@@ -1,4 +1,4 @@
-package extra.jtable;
+package jtable;
 
 import java.util.ArrayList;
 import java.util.List;

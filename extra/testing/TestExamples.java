@@ -1,4 +1,4 @@
-package extra.testing;
+package testing;
 
 import java.io.File;
 import java.io.FileInputStream;

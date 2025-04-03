@@ -1,7 +1,9 @@
 package simulator.view;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,10 +36,12 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 	private static final long serialVersionUID = 1L;
 	private List<String> _vIds = new ArrayList<>();
 	private Controller _c;
-	int _time;
+	private int _time;
+
 	
-	 ChangeCO2ClassDialog(Controller c){
-		 super();
+	
+	 ChangeCO2ClassDialog(Controller c, Frame frame){
+		 super(frame, true);
 		 _c = c;
 		 c.addObserver(this);
 		 initGUI();
@@ -59,7 +63,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(spinnerPanel);
 		
-		spinnerPanel.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.PAGE_START);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(0, 70)), BorderLayout.PAGE_START);
 
 		
 		JLabel vLabel = new JLabel("Vehicle: ");
@@ -70,6 +74,7 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		vBox.setMaximumSize(new Dimension(200, 20));
 		vLabel.add(vBox);
 		spinnerPanel.add(vLabel);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(vBox);
 		
 		
@@ -83,7 +88,9 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		JComboBox<Integer> cBox = new JComboBox<>(cComboModel);
 		cBox.setMaximumSize(new Dimension(200, 20));
 		CO2Class.add(cBox);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(CO2Class);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(cBox);
 		
 		
@@ -93,7 +100,9 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		tSpin.setMaximumSize(new Dimension(200, 20));
 		tSpin.setValue(1);
 		tLabel.add(tSpin);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(tLabel);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(tSpin);
 			
 		JPanel buttonPanel = new JPanel();
@@ -122,11 +131,13 @@ public class ChangeCO2ClassDialog extends JDialog implements TrafficSimObserver{
 		});
 		buttonPanel.add(OKButton);
 		
-		setBounds(new Rectangle(800, 150));
+		
+		setBounds(new Rectangle(800, 170));
 		setVisible(false);
 	}
 
 	public void open() {
+		this.setLocationRelativeTo(getParent());
 		setVisible(true);
 	}
 

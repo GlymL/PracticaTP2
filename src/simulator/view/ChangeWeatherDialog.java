@@ -2,6 +2,7 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,10 +37,10 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 	private static final long serialVersionUID = 1L;
 	private List<String> _rIds = new ArrayList<>();
 	private Controller _c;
-	int _time;
+	private int _time;
 	
-	 ChangeWeatherDialog(Controller c){
-		 super();
+	 ChangeWeatherDialog(Controller c, Frame frame){
+		 super(frame, true);
 		 _c = c;
 		 c.addObserver(this);
 		 initGUI();
@@ -72,8 +73,9 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		vBox.setMaximumSize(new Dimension(200, 20));
 		vLabel.add(vBox);
 		spinnerPanel.add(vLabel);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(vBox);
-		
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		
 		JLabel CO2Class = new JLabel("Weather: ");
 		Vector<Weather> cComboModel = new Vector<>();
@@ -84,7 +86,9 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		cBox.setMaximumSize(new Dimension(200, 20));
 		CO2Class.add(cBox);
 		spinnerPanel.add(CO2Class);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(cBox);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		
 		
 		JLabel tLabel = new JLabel("Ticks: ");
@@ -94,6 +98,7 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		tSpin.setValue(1);
 		tLabel.add(tSpin);
 		spinnerPanel.add(tLabel);
+		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(tSpin);
 			
 		JPanel buttonPanel = new JPanel();
@@ -127,7 +132,9 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 	}
 
 	public void open() {
+		this.setLocationRelativeTo(getParent());
 		setVisible(true);
+		
 	}
 
 

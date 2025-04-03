@@ -66,7 +66,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		_setContClassButton = new JButton(new ImageIcon(loadImage("co2class.png")));
 		_setContClassButton.setToolTipText("Change CO2 class of a vehicle");
 		_setContClassButton.addActionListener((e) -> {
-			ChangeCO2ClassDialog _CO2Event = new ChangeCO2ClassDialog(_controller);
+			ChangeCO2ClassDialog _CO2Event = new ChangeCO2ClassDialog(_controller, ViewUtils.getWindow(this));
 			_CO2Event.open();
 			}
 		);
@@ -76,7 +76,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		_setWeatherButton = new JButton(new ImageIcon(loadImage("weather.png")));
 		_setWeatherButton.setToolTipText("Change Weather of the road");
 		_setWeatherButton.addActionListener((e) -> {
-			ChangeWeatherDialog _weatherEvent = new ChangeWeatherDialog(_controller);
+			this.setEnabled(false);
+			ChangeWeatherDialog _weatherEvent = new ChangeWeatherDialog(_controller, ViewUtils.getWindow(this));
 			_weatherEvent.open();
 			}
 		);
@@ -85,6 +86,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		separator(bar);
 		
 		_executeButton = new JButton(new ImageIcon(loadImage("run.png")));
+		
 		_executeButton.setToolTipText("Run the simulator");
 		bar.add(_executeButton);
 		
@@ -100,25 +102,29 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 		spin.setMaximumSize(new Dimension(2000, 50));
 		spin.setValue(10);
 		spin.setToolTipText("Simulation tick to run 1 - 10000");
-		_executeButton.addActionListener((e) -> {_stopped = false; advance(s);});
 		ticks.add(spin);
 		bar.add(ticks);
 		bar.add(spin);
+		
+		_executeButton.addActionListener((e) -> {_stopped = false; 
+			runSim(s.getNumber().intValue());
+			}
+		);
 		
 		
 		bar.add(Box.createHorizontalGlue());
 		separator(bar);
 		_exitButton = new JButton(new ImageIcon(loadImage("exit.png")));
 		_exitButton.setToolTipText("Exit");
-		_exitButton.addActionListener((e) -> close());
+		_exitButton.addActionListener((e) -> {
+			ViewUtils.quit(this);
+		}
+		);
 		bar.add(_exitButton);
 		this.add(bar);
 		
 	}
 	
-	private void advance(SpinnerNumberModel s) {
-		runSim (s.getNumber().intValue());
-	}
 	private void runSim(int n) {
 		if (n > 0 && !_stopped) {
 			_loadFileButton.setEnabled(false);
@@ -149,13 +155,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver {
 	}
 	
 	
-	private void close() {
-		int option = JOptionPane.showConfirmDialog
-				(this, "Estas seguro de que quieres cerrar el programa?", "Salida del programa", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if(option == 0)
-			System.exit(0);
-		
-	}
 	private Object loadFile(){
 		JFileChooser chooser = new JFileChooser(new File("resources/examples"));
 		try {
