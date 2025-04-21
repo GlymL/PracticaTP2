@@ -24,7 +24,6 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	private JLabel tickLabel;
 	private JLabel eventLabel;
 
-	
 	public StatusBar(Controller c) {
 		_controller = c;
 		initGUI();
@@ -47,15 +46,23 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {tickLabel.setText("Time: " + time); eventLabel.setText("");}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
+		tickLabel.setText("Time: " + time);
+		eventLabel.setText("");
+	}
 
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {eventLabel.setText("Event added " + e.toString());}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
+		eventLabel.setText("Event added " + e.toString());
+	}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {tickLabel.setText("Time: 0");}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {
+		tickLabel.setText("Time: 0");
+	}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {}
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {
+	}
 
 }

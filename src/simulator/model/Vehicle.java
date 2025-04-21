@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import org.json.JSONObject;
 
-public class Vehicle extends SimulatedObject{
+public class Vehicle extends SimulatedObject {
 	private List<Junction> _junctionList;
 	private int _maxSpeed;
 	private int _actualSpeed;
@@ -14,14 +14,14 @@ public class Vehicle extends SimulatedObject{
 	private int _contaminationClass;
 	private int _contTotal;
 	private int _totalDistance;
-	
-	
-	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) { //Constructor
+
+	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) { // Constructor
 		super(id);
 		if (maxSpeed <= 0)
 			throw new IllegalArgumentException("The argument Max Speed must be a positive number");
 		if (contClass < 0 || contClass > 10)
-			throw new IllegalArgumentException("The argument Contamination Class must be an integer number between 0 and 10");
+			throw new IllegalArgumentException(
+					"The argument Contamination Class must be an integer number between 0 and 10");
 		if (itinerary.size() < 2)
 			throw new IllegalArgumentException("The argument Itinerary must have at least 2 junctions");
 		_maxSpeed = maxSpeed;
@@ -32,22 +32,24 @@ public class Vehicle extends SimulatedObject{
 		_junctionList = Collections.unmodifiableList(itinerary);
 		_status = VehicleStatus.PENDING;
 	}
+
 	@Override
-	void advance(int time) { //actualizador
-		if(_status == VehicleStatus.TRAVELING) {
+	void advance(int time) { // actualizador
+		if (_status == VehicleStatus.TRAVELING) {
 			int auxLocation = _location;
 			_location = Math.min(_location + _actualSpeed, _road.getLength());
 			int distance = _location - auxLocation;
 			_totalDistance += distance;
-			_road.addContamination(distance*_contaminationClass);
-			_contTotal += distance*_contaminationClass;
-			if(_location ==_road.getLength()) {
+			_road.addContamination(distance * _contaminationClass);
+			_contTotal += distance * _contaminationClass;
+			if (_location == _road.getLength()) {
 				_actualSpeed = 0;
 				_status = VehicleStatus.WAITING;
 				_road.getDest().enter(this);
 			}
 		}
 	}
+
 	@Override
 	public JSONObject report() {
 		JSONObject j_vehicle = new JSONObject();
@@ -63,29 +65,27 @@ public class Vehicle extends SimulatedObject{
 		}
 		return j_vehicle;
 	}
-	
-	
+
 	void moveToNextRoad() {
-		if(!(_status == VehicleStatus.PENDING || _status == VehicleStatus.WAITING))
+		if (!(_status == VehicleStatus.PENDING || _status == VehicleStatus.WAITING))
 			throw new IllegalArgumentException("Vehicle status must be Pending or waiting");
 		Junction currentJunction;
-		if(this._status == VehicleStatus.PENDING) { //aun no ha empezado su recorrido
+		if (this._status == VehicleStatus.PENDING) { // aun no ha empezado su recorrido
 			currentJunction = _junctionList.get(0);
-		}
-		else {
-			//si esta viajando tiene que ir a su cruce destino
+		} else {
+			// si esta viajando tiene que ir a su cruce destino
 			currentJunction = this._road.getDest();
 			_road.exit(this);
 		}
 		int nextIndex = this._junctionList.indexOf(currentJunction) + 1;
 		// si no hay mas carreteras en el itinerario el vehiculo ha llegado a su destino
-		if(nextIndex >= this._junctionList.size()) { 
+		if (nextIndex >= this._junctionList.size()) {
 			this._road = null;
 			this._actualSpeed = 0;
 			this._location = 0;
 			this._status = VehicleStatus.ARRIVED;
-		}else {
-			Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); //obtenemos carretera
+		} else {
+			Road nextRoad = currentJunction.roadTo(_junctionList.get(nextIndex)); // obtenemos carretera
 			this._road = nextRoad;
 			this._actualSpeed = 0;
 			this._location = 0;
@@ -94,50 +94,57 @@ public class Vehicle extends SimulatedObject{
 		}
 
 	}
-	
-	
-	
-	//Todos los setters
-	void setSpeed(int s) { 
-		if(s < 0)
+
+	// Todos los setters
+	void setSpeed(int s) {
+		if (s < 0)
 			throw new IllegalArgumentException("The argument speed must be a positive number");
-		else if(_status == VehicleStatus.TRAVELING)
+		else if (_status == VehicleStatus.TRAVELING)
 			_actualSpeed = Math.min(_maxSpeed, s);
-		
+
 	}
-	
+
 	void setContClass(int c) {
-		if(c < 0 || c > 10)
-			throw new IllegalArgumentException("The argument Contamination Class must be an integer number between 0 and 10");
+		if (c < 0 || c > 10)
+			throw new IllegalArgumentException(
+					"The argument Contamination Class must be an integer number between 0 and 10");
 		else
 			_contaminationClass = c;
 	}
-	
-	//Todos los Getters
+
+	// Todos los Getters
 	public List<Junction> getItinerary() {
 		return _junctionList;
 	}
+
 	public int getMaxSpeed() {
 		return _maxSpeed;
 	}
+
 	public int getSpeed() {
 		return _actualSpeed;
 	}
+
 	public VehicleStatus getStatus() {
 		return _status;
 	}
+
 	public Road getRoad() {
 		return _road;
 	}
+
 	public int getLocation() {
 		return _location;
 	}
+
 	public int getContClass() {
 		return _contaminationClass;
 	}
+
 	public int getTotalCO2() {
 		return _contTotal;
 	}
+
 	public int getTotalDistance() {
 		return _totalDistance;
 	}

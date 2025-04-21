@@ -6,10 +6,10 @@ import simulator.model.Event;
 import simulator.model.NewCityRoadEvent;
 import simulator.model.Weather;
 
-public class NewCityRoadEventBuilder extends Builder<Event>{
+public class NewCityRoadEventBuilder extends Builder<Event> {
 	private static final String _type_tag = "new_city_road";
 	private static final String _desc = "new city road";
-	
+
 	public NewCityRoadEventBuilder() {
 		super(_type_tag, _desc);
 	}
@@ -25,6 +25,6 @@ public class NewCityRoadEventBuilder extends Builder<Event>{
 		int maxspeed = data.getInt("maxspeed");
 		String weather = data.getString("weather");
 		return new NewCityRoadEvent(time, id, jSrc, jDesc, length, co2limit, maxspeed, Weather.valueOf(weather));
-		}
+	}
 
 }

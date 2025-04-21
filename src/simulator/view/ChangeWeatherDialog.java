@@ -29,7 +29,7 @@ import simulator.model.Vehicle;
 import simulator.model.Weather;
 import simulator.misc.Pair;
 
-public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
+public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver {
 
 	/**
 	 * 
@@ -38,36 +38,34 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 	private List<String> _rIds = new ArrayList<>();
 	private Controller _c;
 	private int _time;
-	
-	 ChangeWeatherDialog(Controller c, Frame frame){
-		 super(frame, true);
-		 _c = c;
-		 c.addObserver(this);
-		 initGUI();
-	 }
 
+	ChangeWeatherDialog(Controller c, Frame frame) {
+		super(frame, true);
+		_c = c;
+		c.addObserver(this);
+		initGUI();
+	}
 
 	private void initGUI() {
 		setTitle("Change Road Weather");
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		setContentPane(mainPanel);
-		JLabel text = new JLabel("<html><p>Schedule an event to change the weather of a road after a given number of simulation ticks from now</p></html>");
+		JLabel text = new JLabel(
+				"<html><p>Schedule an event to change the weather of a road after a given number of simulation ticks from now</p></html>");
 		text.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(text);
-
 
 		JPanel spinnerPanel = new JPanel();
 		spinnerPanel.setLayout(new BoxLayout(spinnerPanel, BoxLayout.X_AXIS));
 		spinnerPanel.setAlignmentX(CENTER_ALIGNMENT);
 		mainPanel.add(spinnerPanel);
-		
+
 		spinnerPanel.add(Box.createRigidArea(new Dimension(0, 50)), BorderLayout.PAGE_START);
 
-		
 		JLabel vLabel = new JLabel("Road: ");
 		Vector<String> vComboModel = new Vector<>();
-		if(_rIds != null)
+		if (_rIds != null)
 			vComboModel = new Vector<>(_rIds);
 		JComboBox<String> vBox = new JComboBox<>(vComboModel);
 		vBox.setMaximumSize(new Dimension(200, 20));
@@ -76,11 +74,11 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(vBox);
 		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-		
+
 		JLabel CO2Class = new JLabel("Weather: ");
 		Vector<Weather> cComboModel = new Vector<>();
 		cComboModel = new Vector<>();
-		for(Weather w : Weather.values())
+		for (Weather w : Weather.values())
 			cComboModel.add(w);
 		JComboBox<Weather> cBox = new JComboBox<>(cComboModel);
 		cBox.setMaximumSize(new Dimension(200, 20));
@@ -89,8 +87,7 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(cBox);
 		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-		
-		
+
 		JLabel tLabel = new JLabel("Ticks: ");
 		SpinnerNumberModel tSpinModel = new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 1);
 		JSpinner tSpin = new JSpinner(tSpinModel);
@@ -100,21 +97,23 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 		spinnerPanel.add(tLabel);
 		spinnerPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 		spinnerPanel.add(tSpin);
-			
+
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		buttonPanel.setAlignmentX(BOTTOM_ALIGNMENT);
 		mainPanel.add(buttonPanel);
-		
+
 		JButton CancelButton = new JButton("Cancel");
-		CancelButton.addActionListener((e) -> {this.setVisible(false);});
+		CancelButton.addActionListener((e) -> {
+			this.setVisible(false);
+		});
 		buttonPanel.add(CancelButton);
-		
+
 		buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-		
+
 		JButton OKButton = new JButton("OK");
 		OKButton.addActionListener((e) -> {
-			if(_rIds.size() != 0) {
+			if (_rIds.size() != 0) {
 				ArrayList<Pair<String, Weather>> ws = new ArrayList<Pair<String, Weather>>();
 				String car = vBox.getSelectedItem().toString();
 				Weather w = Weather.valueOf(cBox.getSelectedItem().toString());
@@ -126,7 +125,7 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 			this.setVisible(false);
 		});
 		buttonPanel.add(OKButton);
-		
+
 		setBounds(new Rectangle(800, 150));
 		setVisible(false);
 	}
@@ -134,32 +133,33 @@ public class ChangeWeatherDialog extends JDialog implements TrafficSimObserver{
 	public void open() {
 		this.setLocationRelativeTo(getParent());
 		setVisible(true);
-		
+
 	}
 
-
 	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {_time = time;
-	if(map != null)
-		for(Vehicle v: map.getVehicles())
-			_rIds.add(v.toString());
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
+		_time = time;
+		if (map != null)
+			for (Vehicle v : map.getVehicles())
+				_rIds.add(v.toString());
 	}
 
-
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
-
-
-	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {time = 0; _rIds.clear();}
-
-
-	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {_time = time;
-	if(map != null)
-		for(Road r: map.getRoads())
-			_rIds.add(r.toString());
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
 	}
 
+	@Override
+	public void onReset(RoadMap map, Collection<Event> events, int time) {
+		time = 0;
+		_rIds.clear();
+	}
+
+	@Override
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {
+		_time = time;
+		if (map != null)
+			for (Road r : map.getRoads())
+				_rIds.add(r.toString());
+	}
 
 }

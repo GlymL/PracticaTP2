@@ -11,9 +11,8 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	private List<Event> _events;
@@ -38,7 +37,7 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	public boolean isCellEditable(int row, int column) {
 		return false;
 	}
-	
+
 	@Override
 	public String getColumnName(int col) {
 		return _colNames[col];
@@ -69,30 +68,35 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	}
 
 	private void eventDelete(int time) {
-		List <Event>_eventsaux = new ArrayList<>(_events);
-		for(Event e : _events)
-			if(e.getTime() <= time) {
+		List<Event> _eventsaux = new ArrayList<>(_events);
+		for (Event e : _events)
+			if (e.getTime() <= time) {
 				_eventsaux.remove(e);
 			}
 		_events.removeAll(_events);
 		_events.addAll(_eventsaux);
 		fireTableDataChanged();
 	}
-	
+
 	@Override
 	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
 		eventDelete(time);
 	}
-	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {this.addEvent(e);}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
+		this.addEvent(e);
+	}
+
+	@Override
+	public void onReset(RoadMap map, Collection<Event> events, int time) {
+		this.reset();
+	}
 
 	@Override
 	public void onRegister(RoadMap map, Collection<Event> events, int time) {
-		for(Event e : events)
-			if(!_events.contains(e))
+		for (Event e : events)
+			if (!_events.contains(e))
 				this.addEvent(e);
 	}
 }

@@ -2,8 +2,7 @@ package simulator.model;
 
 public class CityRoad extends Road {
 
-	CityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length,
-			Weather weather) {
+	CityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather) {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
 	}
 
@@ -14,9 +13,9 @@ public class CityRoad extends Road {
 		int x = 2;
 		if (w == Weather.WINDY || w == Weather.STORM)
 			x = 10;
-			
-		this.set_contTotal(Math.max(tc-x, 0));
-		
+
+		this.set_contTotal(Math.max(tc - x, 0));
+
 	}
 
 	@Override
@@ -26,7 +25,7 @@ public class CityRoad extends Road {
 
 	@Override
 	int calculateVehicleSpeed(Vehicle v) {
-		return(((11-v.getContClass())*this.getSpeedLimit())/11);
+		return (((11 - v.getContClass()) * this.getSpeedLimit()) / 11);
 	}
 
 }

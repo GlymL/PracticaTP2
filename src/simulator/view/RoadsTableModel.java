@@ -12,13 +12,12 @@ import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public class RoadsTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class RoadsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	private List<Road> _roads;
-	private String[] _colNames = { "ID", "Length", "Weather", "Max. Speed", "Speed Limit", "Total CO2" };
+	private String[] _colNames = { "ID", "Length", "Weather", "Max. Speed", "Speed Limit", "Total CO2", "CO2 Limit" };
 	private Controller _c;
 
 	public RoadsTableModel(Controller c) {
@@ -68,7 +67,7 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	// quiero enumerarlos.
 	//
 	// returns the value of a particular cell
-	 
+
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
 		switch (columnIndex) {
@@ -90,28 +89,38 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 		case 5:
 			s = _roads.get(rowIndex).getTotalCO2();
 			break;
+		case 6:
+			s = _roads.get(rowIndex).getContLimit();
 		}
 		return s;
 	}
 
 	private void loadTable(RoadMap map) {
-		for(Road r : map.getRoads()) {
-			if(_roads.indexOf(r) == -1)
-			_roads.add(r);
+		for (Road r : map.getRoads()) {
+			if (_roads.indexOf(r) == -1)
+				_roads.add(r);
 		}
 		fireTableDataChanged();
-			
+
 	}
-	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {loadTable(map);}
 
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
+		loadTable(map);
+	}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
+	}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {loadTable(map);}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {
+		this.reset();
+	}
+
+	@Override
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {
+		loadTable(map);
+	}
 
 }

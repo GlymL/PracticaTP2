@@ -13,9 +13,8 @@ import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
-public class JunctionsTableModel extends AbstractTableModel implements TrafficSimObserver{
+public class JunctionsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	private List<Junction> _junctions;
@@ -84,31 +83,39 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 			break;
 		case 2:
 			s = "";
-			for(Road r : _junctions.get(rowIndex).getInRoads())
-			s += r.getId() + ": " + _junctions.get(rowIndex).getQueue(r)+ " ";
+			for (Road r : _junctions.get(rowIndex).getInRoads())
+				s += r.getId() + ": " + _junctions.get(rowIndex).getQueue(r) + " ";
 			break;
 		}
 		return s;
 	}
 
 	private void loadTable(RoadMap map) {
-		for(Junction j : map.getJunctions()) {
-			if(_junctions.indexOf(j) == -1)
-			_junctions.add(j);
+		for (Junction j : map.getJunctions()) {
+			if (_junctions.indexOf(j) == -1)
+				_junctions.add(j);
 		}
 		fireTableDataChanged();
-			
+
 	}
-	@Override
-	public void onAdvance(RoadMap map, Collection<Event> events, int time) {this.loadTable(map);}
 
 	@Override
-	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {}
+	public void onAdvance(RoadMap map, Collection<Event> events, int time) {
+		this.loadTable(map);
+	}
 
 	@Override
-	public void onReset(RoadMap map, Collection<Event> events, int time) {this.reset();}
+	public void onEventAdded(RoadMap map, Collection<Event> events, Event e, int time) {
+	}
 
 	@Override
-	public void onRegister(RoadMap map, Collection<Event> events, int time) {loadTable(map);}
+	public void onReset(RoadMap map, Collection<Event> events, int time) {
+		this.reset();
+	}
+
+	@Override
+	public void onRegister(RoadMap map, Collection<Event> events, int time) {
+		loadTable(map);
+	}
 
 }
