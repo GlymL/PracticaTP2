@@ -41,7 +41,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		sep.setMaximumSize(new Dimension(1, 50));
 		this.add(sep);
 		this.add(Box.createRigidArea(new Dimension(10, 0)));
-		eventLabel = new JLabel("");
+		eventLabel = new JLabel("Welcome");
 		this.add(eventLabel);
 		this.setVisible(true);
 	}
